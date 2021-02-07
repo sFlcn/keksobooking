@@ -5,22 +5,23 @@ const INVALID_ARGUMENT = 'Аргументы вне допустимого ди�
 
 // random-функции
 const getRandomPositiveIntFromRange = (min, max) => {
-  if (!Number.isInteger(min) || !Number.isInteger(max) || min < 0 || min > max) {
-    throw new Error(INVALID_ARGUMENT);
+  if (Number.isInteger(min) && Number.isInteger(max) && min >= 0 && min <= max) {
+    return Math.floor(Math.random() * (max + 1 - min) + min); // формула с https://learn.javascript.ru/number
   }
-  return Math.floor(Math.random() * (max + 1 - min) + min); // формула с https://learn.javascript.ru/number
+  throw new Error(INVALID_ARGUMENT);
 }
 
 const getRandomPositiveFloatFromRange = (min, max, fractionalDigitsCount = 1) => {
-  if (min < 0 || min > max) {
-    throw new Error(INVALID_ARGUMENT);
+  if (min >= 0 && min <= max) {
+    return +(Math.random() * (max - min) + min).toFixed(fractionalDigitsCount);
   }
-  return +(Math.random() * (max - min) + min).toFixed(fractionalDigitsCount);
+  throw new Error(INVALID_ARGUMENT);
 }
 
 
 // генерация временных данных
 const REALTY_AMOUNT = 10;
+const NUMBER_OF_AVATAR_PICTURES = 8;
 const REALTY_TYPES = [
   'palace',
   'flat',
@@ -63,21 +64,24 @@ const getRandomString = (words = 6) => {  // ф-ия генерации стро
   }
 }
 
-const randomizeArray = (array, cutLength) => {  //ф-ия перемешивания и обрезки массива
-  array.forEach((item, i) => {
-    let j = getRandomPositiveIntFromRange (0, array.length - 1);
-    let swap = array[i];
-    array[i] = array[j];
-    array[j] = swap;
-  });
-  if (cutLength >= 1) {
-    return array.slice(cutLength);
-  } else {
-    return array;
+const shuffleArray = (array) => {  // ф-ия случайной перестановки элементов массива по Фишеру-Йетсу
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = getRandomPositiveIntFromRange (0, i);
+    [array[i], array[j]] = [array[j], array[i]];
   }
+  return array;
 }
 
-const createRealty = () => {  // ф-ия компановки объекта недвижимости
+const cutArrayRandomly = (array) => {  // ф-ия укорачивания массива на случайную длину
+  let cutEnd = getRandomPositiveIntFromRange (1, array.length);
+  return array.slice(0, cutEnd);
+}
+
+const randomizeArray = (array) => {  //ф-ия перемешивания и обрезки массива
+  return cutArrayRandomly(shuffleArray(array));
+}
+
+const createRealty = (id) => {  // ф-ия компановки объекта недвижимости
   let location = {
     x: getRandomPositiveFloatFromRange (35.65000, 35.70000, 5),
     y: getRandomPositiveFloatFromRange (139.70000, 139.80000, 5),
@@ -85,7 +89,8 @@ const createRealty = () => {  // ф-ия компановки объекта н�
   let checkInTime = CHECKIN_TIME[getRandomPositiveIntFromRange (0, CHECKIN_TIME.length - 1)]
 
   return {
-    author: 'img/avatars/user0' + getRandomPositiveIntFromRange (1, 8) + '.png',
+    id,
+    author: `img/avatars/user0${getRandomPositiveIntFromRange (1, NUMBER_OF_AVATAR_PICTURES)}.png`,
     offer: {
       title: getRandomString(10),
       address: location.x + ', ' + location.y,
@@ -95,16 +100,16 @@ const createRealty = () => {  // ф-ия компановки объекта н�
       guests: getRandomPositiveIntFromRange (1, 100),
       checkin: checkInTime,
       checkout: checkInTime,
-      features: randomizeArray(FEATURES_LIST, getRandomPositiveIntFromRange(0, FEATURES_LIST.length - 1)),
+      features: randomizeArray(FEATURES_LIST),
       description: getRandomString(100),
-      photos: randomizeArray(PHOTOS_LIST, getRandomPositiveIntFromRange(0, PHOTOS_LIST.length - 1)),
+      photos: randomizeArray(PHOTOS_LIST),
     },
-    location: location,
+    location,
   };
 }
 
 const getRentalList = (amount) => {  // ф-ия сбора массива объектов недвижимости
-  return new Array(amount).fill(null).map(() => createRealty());
+  return new Array(amount).fill(null).map((_, index) => createRealty(index));
 }
 
 getRentalList(REALTY_AMOUNT);
