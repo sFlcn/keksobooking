@@ -1,1 +1,1 @@
-import './offers-details.js';
+import './popup.js';
