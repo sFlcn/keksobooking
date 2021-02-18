@@ -54,7 +54,7 @@ const shuffleArray = (array) => {  // ф-ия случайной переста�
 }
 
 const cutArrayRandomly = (array) => {  // ф-ия укорачивания массива на случайную длину
-  let cutEnd = getRandomPositiveIntFromRange (1, array.length);
+  let cutEnd = getRandomPositiveIntFromRange (0, array.length);
   return array.slice(0, cutEnd);
 }
 
@@ -82,7 +82,7 @@ const createRealty = (id) => {  // ф-ия компановки объекта �
       checkin: checkInTime,
       checkout: checkInTime,
       features: randomizeArray(FEATURES_LIST),
-      description: getRandomString(100),
+      description: getRandomString(30),
       photos: randomizeArray(PHOTOS_LIST),
     },
     location,
