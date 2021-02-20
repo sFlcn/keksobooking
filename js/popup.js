@@ -73,4 +73,4 @@ const generatePopupFragment = ({
   return document.createDocumentFragment().appendChild(popupContent);
 }
 
-document.querySelector('#map-canvas').appendChild(generatePopupFragment(rentalList[0]));
+export {rentalList, generatePopupFragment};
