@@ -71,7 +71,9 @@ const createRealty = (id) => {  // ф-ия компановки объекта �
 
   return {
     id,
-    author: `img/avatars/user0${getRandomPositiveIntFromRange (1, NUMBER_OF_AVATAR_PICTURES)}.png`,
+    author: {
+      avatar: `img/avatars/user0${getRandomPositiveIntFromRange (1, NUMBER_OF_AVATAR_PICTURES)}.png`,
+    },
     offer: {
       title: getRandomString(10),
       address: location.x + ', ' + location.y,

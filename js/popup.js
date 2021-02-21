@@ -21,12 +21,12 @@ const GUESTS_DECLENSION_ARRAY = [
 const popupTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const generatePopupFragment = ({
-  author,
+  author: {avatar},
   offer: {title, address, price, type, rooms, guests, checkin, checkout, features, description, photos},
 }) => {
   const popupContent = popupTemplate.cloneNode(true);
 
-  popupContent.querySelector('.popup__avatar').src = author;
+  popupContent.querySelector('.popup__avatar').src = avatar;
   popupContent.querySelector('.popup__title').textContent = title;
   popupContent.querySelector('.popup__text--address').textContent = address;
   popupContent.querySelector('.popup__type').textContent = REALTY_TYPES[type];

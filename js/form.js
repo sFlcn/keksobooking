@@ -18,7 +18,7 @@ if (adForm) {
   }
 
   const minPriceChangeByType = () => {  //ф-ия изменения минимальной цены в зависимости от типа жилья
-    let newValue = REALTY_MIN_PRICES[adFormType.value];
+    const newValue = REALTY_MIN_PRICES[adFormType.value];
     adFormPrice.placeholder = newValue;
     adFormPrice.setAttribute('min', newValue);
   }
