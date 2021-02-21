@@ -93,4 +93,4 @@ const getRentalList = (amount) => {  // ф-ия сбора массива объ
   return new Array(amount).fill(null).map((_, index) => createRealty(index));
 }
 
-export {getRentalList};
+export const temporaryRentalList = getRentalList(10);

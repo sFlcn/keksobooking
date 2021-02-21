@@ -1,4 +1,3 @@
-import {getRentalList} from './data.js';
 import {getNumWithWordDeclension} from './util.js';
 
 const REALTY_TYPES = {
@@ -17,8 +16,6 @@ const GUESTS_DECLENSION_ARRAY = [
   'гостей',
   'гостей',
 ];
-const REALTY_AMOUNT = 10;
-const rentalList = getRentalList(REALTY_AMOUNT);
 
 // генерация разметки объявления
 const popupTemplate = document.querySelector('#card').content.querySelector('.popup');
@@ -73,4 +70,4 @@ const generatePopupFragment = ({
   return document.createDocumentFragment().appendChild(popupContent);
 }
 
-export {rentalList, generatePopupFragment};
+export {generatePopupFragment};
