@@ -1,36 +1,23 @@
 import {getLatLngRoundedString} from './util.js';
-import {temporaryRentalList} from './data.js';
 import {generatePopupFragment} from './popup.js';
-import {formActivation, adFormAddress} from './form.js';
 
-const mapSection = document.querySelector('.map');
 const TOKYO_ZOOM_LEVEL = 12;
 const TOKYO_CENTER = {
   lat: 35.6765,
   lng: 139.7494,
 }
+const MARKERS_SIZE = [42, 42];
+const MARKERS_ANCHOR_POINT = [21, 42];
+const MARKERS_ICON = './img/pin.svg';
+const MAIN_MARKER_ICON = './img/main-pin.svg';
+const MAP_LOADED_EVENT = 'map-loaded';
 
-if (mapSection) {
-  const mapFilters = mapSection.querySelector('.map__filters');
-  mapFilters.classList.add(mapFilters.classList[0] + '--disabled'); //деактивация фильтров карты
-  for (let children of mapFilters.children) {
-    children.setAttribute('disabled', 'disabled');
-  }
-
-  const mapActivation = () => { //ф-ия реактивации фильтров карты
-    mapFilters.classList.remove(mapFilters.classList[0] + '--disabled');
-    for (let children of mapFilters.children) {
-      children.removeAttribute('disabled', 'enabled');
-    }
-  }
-
-  // КАРТА
+// КАРТА
+const initMap = (addressField, rentalList) => {
   /* global L:readonly */
   const mapCanvas = L.map('map-canvas') //активация карты leaflet
     .on('load', () => {
-      mapActivation();  //активация фильтров
-      formActivation(); //активация формы
-      adFormAddress.value = getLatLngRoundedString(TOKYO_CENTER);
+      document.dispatchEvent(new Event(MAP_LOADED_EVENT));
     })
     .setView(TOKYO_CENTER, TOKYO_ZOOM_LEVEL);
 
@@ -42,9 +29,9 @@ if (mapSection) {
   ).addTo(mapCanvas);
 
   const mainMarkerIcon = L.icon({ //создание главного маркера
-    iconUrl: './img/main-pin.svg',
-    iconSize: [42, 42],
-    iconAnchor: [21, 42],
+    iconUrl: MAIN_MARKER_ICON,
+    iconSize: MARKERS_SIZE,
+    iconAnchor: MARKERS_ANCHOR_POINT,
   });
   const mainMarker = L.marker(
     TOKYO_CENTER,
@@ -55,14 +42,13 @@ if (mapSection) {
   );
   mainMarker.addTo(mapCanvas);
 
-  temporaryRentalList.forEach((item, index) => {
+  const icon = L.icon({ //создание вторичных маркеров
+    iconUrl: MARKERS_ICON,
+    iconSize: MARKERS_SIZE,
+    iconAnchor: MARKERS_ANCHOR_POINT,
+  });
+  rentalList.forEach((item) => {
     const {location: {x, y}} = item;
-
-    const icon = L.icon({
-      iconUrl: './img/pin.svg',
-      iconSize: [42, 42],
-      iconAnchor: [21, 42],
-    });
     const marker = L.marker(
       {
         lat: x,
@@ -74,7 +60,7 @@ if (mapSection) {
     );
     marker
       .addTo(mapCanvas)
-      .bindPopup(generatePopupFragment(temporaryRentalList[index]),
+      .bindPopup(generatePopupFragment(item),
         {
           keepInView: true,
         },
@@ -82,6 +68,8 @@ if (mapSection) {
   });
 
   mainMarker.on('moveend', (evt) => {
-    adFormAddress.value = getLatLngRoundedString(evt.target.getLatLng());
+    addressField.value = getLatLngRoundedString(evt.target.getLatLng());  //вывод координат главного маркера во внешний элемент (поле формы)
   });
 }
+
+export {initMap, MAP_LOADED_EVENT};

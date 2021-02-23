@@ -1,43 +1,29 @@
-const adForm = document.querySelector('.ad-form');
-const adFormAddress = adForm.querySelector('#address');
-const REALTY_MIN_PRICES = {
-  'bungalow': 0,
-  'flat': 1000,
-  'house': 5000,
-  'palace': 10000,
+const switchEnableForm = (formElement, enable = 'true') => {  //ф-ия (де)активации элементов формы
+  if (enable) {
+    for (let formField of formElement.elements) {
+      formField.removeAttribute('disabled');
+    }
+  } else {
+    for (let formField of formElement.elements) {
+      formField.setAttribute('disabled', 'disabled');
+    }
+  }
 };
 
-if (adForm) {
-  const adFormType = adForm.querySelector('#type');
-  const adFormPrice = adForm.querySelector('#price');
-  const adFormTime = adForm.querySelector('.ad-form__element--time');
-
-  adForm.classList.add(adForm.classList[0] + '--disabled'); //деактивация формы до загрузки карты
-  for (let children of adForm.children) {
-    children.setAttribute('disabled', 'disabled');
-  }
-
-  const minPriceChangeByType = () => {  //ф-ия изменения минимальной цены в зависимости от типа жилья
-    const newValue = REALTY_MIN_PRICES[adFormType.value];
-    adFormPrice.placeholder = newValue;
-    adFormPrice.setAttribute('min', newValue);
-  }
-
-  minPriceChangeByType();
-  adFormType.addEventListener('change', minPriceChangeByType);
-
-  adFormTime.addEventListener('change', (evt) => {  //синхронизации значений полей формы о времени заезда и выезда
-    adFormTime.querySelector('#timein').value = evt.target.value;
-    adFormTime.querySelector('#timeout').value = evt.target.value;
+const addMinPriceChangeByTypeHandler = (formTypeField, formPriceField, realtyPropertiesObject) => {  //обработчик синхронизации поля цены в зависимости от типа жилья
+  formTypeField.addEventListener('change', (evt) => {
+    const newValue = realtyPropertiesObject[evt.target.value]['realtyPrice'];
+    formPriceField.placeholder = newValue;
+    formPriceField.setAttribute('min', newValue);
   });
+};
 
-  adFormAddress.setAttribute('readonly', 'readonly');
-}
+const addFieldsSyncHandler = (listenerTarget, ...fields) => { //обработчик синхронизации значений полей
+  listenerTarget.addEventListener('change', (evt) => {
+    for (let field of fields) {
+      field.value = evt.target.value;
+    }
+  });
+};
 
-export const formActivation = () => { //ф-ия реактивации формы
-  adForm.classList.remove(adForm.classList[0] + '--disabled');
-  for (let children of adForm.children) {
-    children.removeAttribute('disabled', 'enabled');
-  }
-}
-export {adFormAddress};
+export {switchEnableForm, addMinPriceChangeByTypeHandler, addFieldsSyncHandler};

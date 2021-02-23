@@ -1,11 +1,6 @@
 import {getNumWithWordDeclension} from './util.js';
+import {REALTY_PROPERTIES} from './data.js';
 
-const REALTY_TYPES = {
-  'flat': 'Квартира',
-  'bungalow': 'Бунгало',
-  'house': 'Дом',
-  'palace': 'Дворец',
-};
 const ROOMS_DECLENSION_ARRAY = [
   'комната',
   'комнаты',
@@ -29,7 +24,7 @@ const generatePopupFragment = ({
   popupContent.querySelector('.popup__avatar').src = avatar;
   popupContent.querySelector('.popup__title').textContent = title;
   popupContent.querySelector('.popup__text--address').textContent = address;
-  popupContent.querySelector('.popup__type').textContent = REALTY_TYPES[type];
+  popupContent.querySelector('.popup__type').textContent = REALTY_PROPERTIES[type]['realtyType'];
   popupContent.querySelector('.popup__text--capacity').textContent = `${getNumWithWordDeclension(rooms, ROOMS_DECLENSION_ARRAY)} для ${getNumWithWordDeclension(guests, GUESTS_DECLENSION_ARRAY)}`;
   popupContent.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
   popupContent.querySelector('.popup__description').textContent = description;
