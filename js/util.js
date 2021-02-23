@@ -33,4 +33,8 @@ const getNumWithWordDeclension = (number, wordFormsArray) => {
   return number + ' ' + declension;
 }
 
-export {getRandomPositiveIntFromRange, getRandomPositiveFloatFromRange, getNumWithWordDeclension};
+const getLatLngRoundedString = ({lat, lng}, fractionalDigitsCount = 5) => { //ф-ия возврата строки с округлёнными координатамии
+  return `${lat.toFixed(fractionalDigitsCount)}, ${lng.toFixed(fractionalDigitsCount)}`
+}
+
+export {getRandomPositiveIntFromRange, getRandomPositiveFloatFromRange, getNumWithWordDeclension, getLatLngRoundedString};

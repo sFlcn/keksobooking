@@ -1,14 +1,25 @@
-// генерация временных данных
 import {getRandomPositiveIntFromRange, getRandomPositiveFloatFromRange} from './util.js';
 
 const INVALID_ARGUMENT = 'Аргументы вне допустимого диапазона';
 const NUMBER_OF_AVATAR_PICTURES = 8;
-const REALTY_TYPES = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
-];
+const REALTY_PROPERTIES = {
+  palace: {
+    realtyType: 'Дворец',
+    realtyPrice: 10000,
+  },
+  flat: {
+    realtyType: 'Квартира',
+    realtyPrice: 1000,
+  },
+  house: {
+    realtyType: 'Дом',
+    realtyPrice: 5000,
+  },
+  bungalow:{
+    realtyType: 'Бунгало',
+    realtyPrice: 0,
+  },
+};
 const CHECKIN_TIME = [
   '12:00',
   '13:00',
@@ -63,20 +74,23 @@ const randomizeArray = (array) => {  //ф-ия перемешивания и о�
 }
 
 const createRealty = (id) => {  // ф-ия компановки объекта недвижимости
-  let location = {
+  const location = {
     x: getRandomPositiveFloatFromRange (35.65000, 35.70000, 5),
     y: getRandomPositiveFloatFromRange (139.70000, 139.80000, 5),
   };
-  let checkInTime = CHECKIN_TIME[getRandomPositiveIntFromRange (0, CHECKIN_TIME.length - 1)]
+  const checkInTime = CHECKIN_TIME[getRandomPositiveIntFromRange (0, CHECKIN_TIME.length - 1)];
+  const realtyTypes = Object.keys(REALTY_PROPERTIES);
 
   return {
     id,
-    author: `img/avatars/user0${getRandomPositiveIntFromRange (1, NUMBER_OF_AVATAR_PICTURES)}.png`,
+    author: {
+      avatar: `img/avatars/user0${getRandomPositiveIntFromRange (1, NUMBER_OF_AVATAR_PICTURES)}.png`,
+    },
     offer: {
       title: getRandomString(10),
       address: location.x + ', ' + location.y,
       price: getRandomPositiveIntFromRange (1, 1000000),
-      type: REALTY_TYPES[getRandomPositiveIntFromRange (0, REALTY_TYPES.length - 1)],
+      type: realtyTypes[getRandomPositiveIntFromRange (0, realtyTypes.length - 1)],
       rooms: getRandomPositiveIntFromRange (1, 100),
       guests: getRandomPositiveIntFromRange (1, 100),
       checkin: checkInTime,
@@ -93,4 +107,5 @@ const getRentalList = (amount) => {  // ф-ия сбора массива объ
   return new Array(amount).fill(null).map((_, index) => createRealty(index));
 }
 
-export {getRentalList};
+export {REALTY_PROPERTIES};
+export const temporaryRentalList = getRentalList(10);
