@@ -1,5 +1,5 @@
-import {initMap, MAP_LOADED_EVENT} from './map.js';
-import {switchEnableForm, addMinPriceChangeByTypeHandler, addFieldsSyncHandler} from './form.js';
+import {initMap} from './map.js';
+import {disableFormFields, enableFormFields, changePlaceholderAndMin, changeFieldsValue} from './form.js';
 import {REALTY_PROPERTIES, temporaryRentalList} from './data.js';
 
 const mapSection = document.querySelector('.map');
@@ -13,27 +13,33 @@ if (mapSection && adForm) {
   const adFormType = adForm.querySelector('#type');
   const adFormPrice = adForm.querySelector('#price');
   const adFormTime = adForm.querySelector('.ad-form__element--time');
+  const adFormCheckinTime = adFormTime.querySelector('#timein');
+  const adFormCheckoutTime = adFormTime.querySelector('#timeout');
 
-  switchEnableForm(adForm, false);  //деактивация формы объявления и фильтров до загрузки карты
-  switchEnableForm(mapFilters, false);
+  disableFormFields(adForm);  //деактивация формы объявления и фильтров до загрузки карты
+  disableFormFields(mapFilters);
   adForm.classList.add(cssClassForDisabledForm);
   mapFilters.classList.add(cssClassForDisabledFilters);
 
-  const mapLoadingHandler = () => {  //активация фильтров и формы после загрузки карты
-    switchEnableForm(adForm, true);
-    switchEnableForm(mapFilters, true);
+  const initForms = () => {  //активация фильтров и формы после загрузки карты
+    enableFormFields(adForm);
+    enableFormFields(mapFilters);
     adForm.classList.remove(cssClassForDisabledForm);
     mapFilters.classList.remove(cssClassForDisabledFilters);
-    document.removeEventListener(MAP_LOADED_EVENT, mapLoadingHandler);
   };
-  document.addEventListener(MAP_LOADED_EVENT, mapLoadingHandler);
 
   adFormAddress.setAttribute('readonly', ''); //блокировка редактирования поля адреса (координат)
 
-  addFieldsSyncHandler(adFormTime, adFormTime.querySelector('#timein'), adFormTime.querySelector('#timeout'));  //синхронизации полей времени заезда и выезда
+  const syncCheckinAndCheckout = (evt) => {  //синхронизации полей времени заезда и выезда
+    changeFieldsValue(evt.target.value, adFormCheckinTime, adFormCheckoutTime);
+  }
+  adFormTime.addEventListener('change', syncCheckinAndCheckout);
 
-  addMinPriceChangeByTypeHandler(adFormType, adFormPrice, REALTY_PROPERTIES); // синхронизация поля цены в зависимости от типа жилья
-  adFormType.dispatchEvent(new Event('change'));
+  const syncRealtyPriceToRealtyType = () => { // синхронизации поля цены в зависимости от типа жилья
+    changePlaceholderAndMin(REALTY_PROPERTIES[adFormType.value]['realtyPrice'], adFormPrice);
+  };
+  adFormType.addEventListener('change', syncRealtyPriceToRealtyType);
+  syncRealtyPriceToRealtyType();
 
-  initMap(adFormAddress, temporaryRentalList); //инициализация карты
+  initMap(adFormAddress, temporaryRentalList, initForms); //инициализация карты и форм
 }

@@ -10,14 +10,13 @@ const MARKERS_SIZE = [42, 42];
 const MARKERS_ANCHOR_POINT = [21, 42];
 const MARKERS_ICON = './img/pin.svg';
 const MAIN_MARKER_ICON = './img/main-pin.svg';
-const MAP_LOADED_EVENT = 'map-loaded';
 
 // КАРТА
-const initMap = (addressField, rentalList) => {
+const initMap = (addressField, rentalList, onSuccess) => {
   /* global L:readonly */
   const mapCanvas = L.map('map-canvas') //активация карты leaflet
     .on('load', () => {
-      document.dispatchEvent(new Event(MAP_LOADED_EVENT));
+      onSuccess();
     })
     .setView(TOKYO_CENTER, TOKYO_ZOOM_LEVEL);
 
@@ -72,4 +71,4 @@ const initMap = (addressField, rentalList) => {
   });
 }
 
-export {initMap, MAP_LOADED_EVENT};
+export {initMap};
