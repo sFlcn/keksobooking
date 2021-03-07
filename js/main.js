@@ -1,7 +1,14 @@
-import {initMap} from './map.js';
-import {disableFormFields, enableFormFields, changePlaceholderAndMin, changeFieldsValue} from './form.js';
+import {initMap, mainMarker} from './map.js';
+import {getLatLngRoundedString} from './util.js';
+import {disableFormFields, enableFormFields, changePlaceholderAndMin, changeFieldsValue, fieldValueValidation, fieldValueLengthValidation, checkCapacity} from './form.js';
 import {REALTY_PROPERTIES, temporaryRentalList} from './data.js';
 
+const TITLE_MIN_LENGTH = 30;
+const TITLE_MAX_LENGTH = 100;
+const MIN_PRICE = 0;
+const MAX_PRICE = 1000000;
+const MIN_ROOM_CAPACITY = '0';
+const MAX_ROOM_COUNT = '100';
 const mapSection = document.querySelector('.map');
 const adForm = document.querySelector('.ad-form');
 const cssClassForDisabledFilters = 'map__filters--disabled';
@@ -9,12 +16,15 @@ const cssClassForDisabledForm = 'ad-form--disabled';
 
 if (mapSection && adForm) {
   const mapFilters = mapSection.querySelector('.map__filters');
+  const adFormTitle = adForm.querySelector('#title');
   const adFormAddress = adForm.querySelector('#address');
   const adFormType = adForm.querySelector('#type');
   const adFormPrice = adForm.querySelector('#price');
   const adFormTime = adForm.querySelector('.ad-form__element--time');
   const adFormCheckinTime = adFormTime.querySelector('#timein');
   const adFormCheckoutTime = adFormTime.querySelector('#timeout');
+  const adFormRoomsCount = adForm.querySelector('#room_number');
+  const adFormCapacity = adForm.querySelector('#capacity');
 
   disableFormFields(adForm);  //деактивация формы объявления и фильтров до загрузки карты
   disableFormFields(mapFilters);
@@ -41,5 +51,28 @@ if (mapSection && adForm) {
   adFormType.addEventListener('change', syncRealtyPriceToRealtyType);
   syncRealtyPriceToRealtyType();
 
-  initMap(adFormAddress, temporaryRentalList, initForms); //инициализация карты и форм
+  const validateAdFormTitle = () => { // Валидация поля заголовка
+    fieldValueLengthValidation(adFormTitle, TITLE_MIN_LENGTH, TITLE_MAX_LENGTH);
+  };
+  adFormTitle.addEventListener('input', validateAdFormTitle);
+
+  const validatePrice = () => { // Валидация поля цены за ночь
+    fieldValueValidation(adFormPrice, MIN_PRICE, MAX_PRICE);
+  };
+  adFormPrice.addEventListener('input', validatePrice);
+
+  const validateRoomsAndCapacity = () => { // Валидация полей с количеством комнат и количеством мест
+    checkCapacity(adFormRoomsCount, adFormCapacity, MIN_ROOM_CAPACITY, MAX_ROOM_COUNT, 'Не для гостей');
+  };
+  adFormRoomsCount.addEventListener('change', validateRoomsAndCapacity);
+  adFormCapacity.addEventListener('change', validateRoomsAndCapacity);
+  validateRoomsAndCapacity();
+
+  initMap(temporaryRentalList, initForms); //инициализация КАРТЫ и ФОРМ
+
+  const transferAddres = () => {  //вывод координат главного маркера в поле формы
+    changeFieldsValue(getLatLngRoundedString(mainMarker.getLatLng()), adFormAddress);
+  }
+  mainMarker.on('moveend', transferAddres);
+  transferAddres();
 }
