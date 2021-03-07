@@ -1,4 +1,3 @@
-import {getLatLngRoundedString} from './util.js';
 import {generatePopupFragment} from './popup.js';
 
 const TOKYO_ZOOM_LEVEL = 12;
@@ -10,14 +9,30 @@ const MARKERS_SIZE = [42, 42];
 const MARKERS_ANCHOR_POINT = [21, 42];
 const MARKERS_ICON = './img/pin.svg';
 const MAIN_MARKER_ICON = './img/main-pin.svg';
-const MAP_LOADED_EVENT = 'map-loaded';
+const mainMarkerIcon = L.icon({
+  iconUrl: MAIN_MARKER_ICON,
+  iconSize: MARKERS_SIZE,
+  iconAnchor: MARKERS_ANCHOR_POINT,
+});
+const mainMarker = L.marker(
+  TOKYO_CENTER,
+  {
+    draggable: true,
+    icon: mainMarkerIcon,
+  },
+);
+const icon = L.icon({
+  iconUrl: MARKERS_ICON,
+  iconSize: MARKERS_SIZE,
+  iconAnchor: MARKERS_ANCHOR_POINT,
+});
 
 // КАРТА
-const initMap = (addressField, rentalList) => {
+const initMap = (rentalList, onSuccess) => {
   /* global L:readonly */
   const mapCanvas = L.map('map-canvas') //активация карты leaflet
     .on('load', () => {
-      document.dispatchEvent(new Event(MAP_LOADED_EVENT));
+      onSuccess();
     })
     .setView(TOKYO_CENTER, TOKYO_ZOOM_LEVEL);
 
@@ -28,26 +43,9 @@ const initMap = (addressField, rentalList) => {
     },
   ).addTo(mapCanvas);
 
-  const mainMarkerIcon = L.icon({ //создание главного маркера
-    iconUrl: MAIN_MARKER_ICON,
-    iconSize: MARKERS_SIZE,
-    iconAnchor: MARKERS_ANCHOR_POINT,
-  });
-  const mainMarker = L.marker(
-    TOKYO_CENTER,
-    {
-      draggable: true,
-      icon: mainMarkerIcon,
-    },
-  );
-  mainMarker.addTo(mapCanvas);
+  mainMarker.addTo(mapCanvas); //создание главного маркера
 
-  const icon = L.icon({ //создание вторичных маркеров
-    iconUrl: MARKERS_ICON,
-    iconSize: MARKERS_SIZE,
-    iconAnchor: MARKERS_ANCHOR_POINT,
-  });
-  rentalList.forEach((item) => {
+  rentalList.forEach((item) => { //создание вторичных маркеров
     const {location: {x, y}} = item;
     const marker = L.marker(
       {
@@ -66,10 +64,6 @@ const initMap = (addressField, rentalList) => {
         },
       );
   });
-
-  mainMarker.on('moveend', (evt) => {
-    addressField.value = getLatLngRoundedString(evt.target.getLatLng());  //вывод координат главного маркера во внешний элемент (поле формы)
-  });
 }
 
-export {initMap, MAP_LOADED_EVENT};
+export {initMap, mainMarker};
