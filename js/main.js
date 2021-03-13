@@ -1,8 +1,11 @@
-import {initMap, mainMarker} from './map.js';
+import {initMap, mainMarker, createMarkers} from './map.js';
 import {getLatLngRoundedString} from './util.js';
 import {disableFormFields, enableFormFields, changePlaceholderAndMin, changeFieldsValue, fieldValueValidation, fieldValueLengthValidation, checkCapacity} from './form.js';
-import {REALTY_PROPERTIES, temporaryRentalList} from './data.js';
+import {REALTY_PROPERTIES} from './data.js';
+import {getData} from './api.js';
 
+const GET_DATA_URL = 'https://22.javascript.pages.academy/keksobooking/data';
+const SEND_DATA_URL = 'https://22.javascript.pages.academy/keksobooking';
 const TITLE_MIN_LENGTH = 30;
 const TITLE_MAX_LENGTH = 100;
 const MIN_PRICE = 0;
@@ -68,7 +71,18 @@ if (mapSection && adForm) {
   adFormCapacity.addEventListener('change', validateRoomsAndCapacity);
   validateRoomsAndCapacity();
 
-  initMap(temporaryRentalList, initForms); //инициализация КАРТЫ и ФОРМ
+  // загрузка данных, инициализация КАРТЫ и ФОРМ
+  getData(
+    GET_DATA_URL,
+    ((offersList) => {
+      initMap(initForms);
+      createMarkers(offersList);
+    }),
+    (() => {
+      initMap(initForms);
+      // showFailReceivingAlert();
+    }),
+  );
 
   const transferAddres = () => {  //вывод координат главного маркера в поле формы
     changeFieldsValue(getLatLngRoundedString(mainMarker.getLatLng()), adFormAddress);

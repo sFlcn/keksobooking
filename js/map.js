@@ -1,36 +1,63 @@
 import {generatePopupFragment} from './popup.js';
 
-const TOKYO_ZOOM_LEVEL = 12;
+const TOKYO_ZOOM_LEVEL = 9;
 const TOKYO_CENTER = {
-  lat: 35.6765,
-  lng: 139.7494,
+  lat: 35.89,
+  lng: 139.88,
 }
 const MARKERS_SIZE = [42, 42];
 const MARKERS_ANCHOR_POINT = [21, 42];
 const MARKERS_ICON = './img/pin.svg';
 const MAIN_MARKER_ICON = './img/main-pin.svg';
-const mainMarkerIcon = L.icon({
+
+/* global L:readonly */
+const mapCanvas = L.map('map-canvas');
+
+const mainMarkerIcon = L.icon({ //свойства главного маркера
   iconUrl: MAIN_MARKER_ICON,
   iconSize: MARKERS_SIZE,
   iconAnchor: MARKERS_ANCHOR_POINT,
 });
-const mainMarker = L.marker(
+const mainMarker = L.marker( //создание главного маркера
   TOKYO_CENTER,
   {
     draggable: true,
     icon: mainMarkerIcon,
   },
 );
-const icon = L.icon({
+
+const icon = L.icon({ //свойства вторичных маркеров
   iconUrl: MARKERS_ICON,
   iconSize: MARKERS_SIZE,
   iconAnchor: MARKERS_ANCHOR_POINT,
 });
+const markers = L.layerGroup().addTo(mapCanvas); //создание слоя для вторичных маркеров
 
-// КАРТА
-const initMap = (rentalList, onSuccess) => {
-  /* global L:readonly */
-  const mapCanvas = L.map('map-canvas') //активация карты leaflet
+const createMarkers = (objectsArray) => { // ф-ия создания вторичных маркеров
+  markers.clearLayers();
+  objectsArray.forEach((item) => {
+    const {location: {lat, lng}} = item;
+    const marker = L.marker(
+      {
+        lat,
+        lng,
+      },
+      {
+        icon,
+      },
+    );
+    marker
+      .addTo(markers)
+      .bindPopup(generatePopupFragment(item),
+        {
+          keepInView: true,
+        },
+      );
+  });
+}
+
+const initMap = (onSuccess) => { // ф-ия активации карты leaflet
+  mapCanvas
     .on('load', () => {
       onSuccess();
     })
@@ -43,27 +70,9 @@ const initMap = (rentalList, onSuccess) => {
     },
   ).addTo(mapCanvas);
 
-  mainMarker.addTo(mapCanvas); //создание главного маркера
+  mainMarker.addTo(mapCanvas); //добавление главного маркера на карту
 
-  rentalList.forEach((item) => { //создание вторичных маркеров
-    const {location: {x, y}} = item;
-    const marker = L.marker(
-      {
-        lat: x,
-        lng: y,
-      },
-      {
-        icon,
-      },
-    );
-    marker
-      .addTo(mapCanvas)
-      .bindPopup(generatePopupFragment(item),
-        {
-          keepInView: true,
-        },
-      );
-  });
+  return mapCanvas;
 }
 
-export {initMap, mainMarker};
+export {initMap, mainMarker, createMarkers};
