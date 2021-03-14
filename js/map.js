@@ -1,7 +1,7 @@
 import {generatePopupFragment} from './popup.js';
 
-const TOKYO_ZOOM_LEVEL = 9;
-const TOKYO_CENTER = {
+const MAP_DEFAULT_ZOOM_LEVEL = 9;
+const MAP_DEFAULT_CENTER = {
   lat: 35.89,
   lng: 139.88,
 }
@@ -19,7 +19,7 @@ const mainMarkerIcon = L.icon({ //свойства главного маркер
   iconAnchor: MARKERS_ANCHOR_POINT,
 });
 const mainMarker = L.marker( //создание главного маркера
-  TOKYO_CENTER,
+  MAP_DEFAULT_CENTER,
   {
     draggable: true,
     icon: mainMarkerIcon,
@@ -61,7 +61,7 @@ const initMap = (onSuccess) => { // ф-ия активации карты leafle
     .on('load', () => {
       onSuccess();
     })
-    .setView(TOKYO_CENTER, TOKYO_ZOOM_LEVEL);
+    .setView(MAP_DEFAULT_CENTER, MAP_DEFAULT_ZOOM_LEVEL);
 
   L.tileLayer(  //подключение слоя карты Open Street Map
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -75,4 +75,10 @@ const initMap = (onSuccess) => { // ф-ия активации карты leafle
   return mapCanvas;
 }
 
-export {initMap, mainMarker, createMarkers};
+const resetMap = () => {
+  mainMarker.setLatLng(MAP_DEFAULT_CENTER);
+  mapCanvas.closePopup();
+  mapCanvas.setView(MAP_DEFAULT_CENTER, MAP_DEFAULT_ZOOM_LEVEL);
+}
+
+export {initMap, mainMarker, createMarkers, resetMap};

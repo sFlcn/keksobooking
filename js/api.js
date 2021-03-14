@@ -1,4 +1,4 @@
-function getData(targetUrl, onSuccess, onFail) {
+const getData = (targetUrl, onSuccess, onFail) => {
   fetch(targetUrl)
     .then((response) => {
       if (response.ok) {
@@ -15,4 +15,23 @@ function getData(targetUrl, onSuccess, onFail) {
     });
 }
 
-export {getData};
+const sendData = (sentData, targetUrl, onSuccess, onFail) => {
+  fetch(
+    targetUrl,
+    {
+      method: 'POST',
+      body: sentData,
+    })
+    .then((response) => {
+      if (response.ok) {
+        onSuccess();
+      } else {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+    })
+    .catch((err) => {
+      onFail(err);
+    });
+}
+
+export {getData, sendData};

@@ -1,8 +1,8 @@
-import {initMap, mainMarker, createMarkers} from './map.js';
+import {initMap, mainMarker, createMarkers, resetMap} from './map.js';
 import {getLatLngRoundedString} from './util.js';
 import {disableFormFields, enableFormFields, changePlaceholderAndMin, changeFieldsValue, fieldValueValidation, fieldValueLengthValidation, checkCapacity} from './form.js';
 import {REALTY_PROPERTIES} from './data.js';
-import {getData} from './api.js';
+import {getData, sendData} from './api.js';
 
 const GET_DATA_URL = 'https://22.javascript.pages.academy/keksobooking/data';
 const SEND_DATA_URL = 'https://22.javascript.pages.academy/keksobooking';
@@ -28,6 +28,7 @@ if (mapSection && adForm) {
   const adFormCheckoutTime = adFormTime.querySelector('#timeout');
   const adFormRoomsCount = adForm.querySelector('#room_number');
   const adFormCapacity = adForm.querySelector('#capacity');
+  const adFormResetButton = adForm.querySelector('.ad-form__reset');
 
   disableFormFields(adForm);  //деактивация формы объявления и фильтров до загрузки карты
   disableFormFields(mapFilters);
@@ -71,7 +72,7 @@ if (mapSection && adForm) {
   adFormCapacity.addEventListener('change', validateRoomsAndCapacity);
   validateRoomsAndCapacity();
 
-  // загрузка данных, инициализация КАРТЫ и ФОРМ
+  //  загрузка данных, инициализация КАРТЫ и ФОРМ
   getData(
     GET_DATA_URL,
     ((offersList) => {
@@ -84,9 +85,41 @@ if (mapSection && adForm) {
     }),
   );
 
-  const transferAddres = () => {  //вывод координат главного маркера в поле формы
+  //  вывод координат главного маркера в поле формы
+  const transferAddres = () => {
     changeFieldsValue(getLatLngRoundedString(mainMarker.getLatLng()), adFormAddress);
   }
   mainMarker.on('moveend', transferAddres);
   transferAddres();
+
+  // ф-ия возвращение карты и форм в исходное состояние
+  const resetUserInputs = () => {
+    resetMap();
+    mapFilters.reset();
+    adForm.reset();
+    syncRealtyPriceToRealtyType();
+    transferAddres();
+  }
+
+  const onResetButtonClick = (evt) => {
+    evt.preventDefault();
+    resetUserInputs();
+  }
+
+  //  отправка данных формы
+  const onFormSubmit = (evt) => {
+    evt.preventDefault();
+    sendData(
+      new FormData(evt.target),
+      SEND_DATA_URL,
+      (() => {
+        resetUserInputs();
+        // showSuccessfullSendMessage;
+      }),
+      // showFailedSendMessage,
+    );
+  }
+  adForm.addEventListener('submit', onFormSubmit);
+  adFormResetButton.addEventListener('click', onResetButtonClick);
+
 }
