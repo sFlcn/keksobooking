@@ -3,19 +3,27 @@ import {getLatLngRoundedString} from './util.js';
 import {disableFormFields, enableFormFields, changePlaceholderAndMin, changeFieldsValue, fieldValueValidation, fieldValueLengthValidation, checkCapacity} from './form.js';
 import {REALTY_PROPERTIES} from './data.js';
 import {getData, sendData} from './api.js';
+import {showSimpleAlert, showCustomVanishingAlert} from './alerts.js';
 
 const GET_DATA_URL = 'https://22.javascript.pages.academy/keksobooking/data';
-const SEND_DATA_URL = 'https://22.javascript.pages.academy/keksobooking';
+const SEND_DATA_URL = 'https://23.javascript.pages.academy/keksobooking';
 const TITLE_MIN_LENGTH = 30;
 const TITLE_MAX_LENGTH = 100;
 const MIN_PRICE = 0;
 const MAX_PRICE = 1000000;
 const MIN_ROOM_CAPACITY = '0';
 const MAX_ROOM_COUNT = '100';
+const DATA_ALERT_TIME = 3000;
+const DATA_ALERT_MESSAGE_CLASS = 'data-alert__message';
+const DATA_ALERT_TEXT = 'Не удаётся загрузить данные объявлений. Повторите попытку позднее.';
+const mainElement = document.querySelector('main');
 const mapSection = document.querySelector('.map');
 const adForm = document.querySelector('.ad-form');
 const cssClassForDisabledFilters = 'map__filters--disabled';
 const cssClassForDisabledForm = 'ad-form--disabled';
+const successMessageTemplateElement = document.querySelector('#success').content.querySelector('.success');
+const errorMessageTemplateElement = document.querySelector('#error').content.querySelector('.error');
+const dataAlertTemplateElement = document.querySelector('#data-alert').content.querySelector('.data-alert');
 
 if (mapSection && adForm) {
   const mapFilters = mapSection.querySelector('.map__filters');
@@ -81,7 +89,7 @@ if (mapSection && adForm) {
     }),
     (() => {
       initMap(initForms);
-      // showFailReceivingAlert();
+      showCustomVanishingAlert(dataAlertTemplateElement, mainElement, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DATA_ALERT_TEXT);
     }),
   );
 
@@ -114,9 +122,11 @@ if (mapSection && adForm) {
       SEND_DATA_URL,
       (() => {
         resetUserInputs();
-        // showSuccessfullSendMessage;
+        showSimpleAlert(successMessageTemplateElement, mainElement);
       }),
-      // showFailedSendMessage,
+      (() => {
+        showSimpleAlert(errorMessageTemplateElement, mainElement);
+      }),
     );
   }
   adForm.addEventListener('submit', onFormSubmit);
