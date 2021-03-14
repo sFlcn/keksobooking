@@ -35,11 +35,11 @@ const showCustomVanishingAlert = (
   parentElement,
   time = DEFAULT_VANISHING_TIME,
   contentCssClass = DEFAULT_CSS_CLASS_FOR_ALERT_TEXT,
-  text,
+  htmlText,
 ) => {
   const alert = temlateElement.cloneNode(true);
-  if (contentCssClass && text) {
-    alert.querySelector(`.${contentCssClass}`).textContent = text;
+  if (contentCssClass && htmlText) {
+    alert.querySelector(`.${contentCssClass}`).innerHTML = htmlText;
   }
   parentElement.appendChild(alert);
   setTimeout(

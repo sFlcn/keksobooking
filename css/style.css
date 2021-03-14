@@ -1035,7 +1035,7 @@ fieldset {
   left: 0;
   z-index: 999;
 
-  padding: 65px 25px 45px;
+  padding: 70px 25px 20px;
 
   font-size: 25px;
   text-align: center;
@@ -1043,8 +1043,8 @@ fieldset {
 
   background-color: rgba(240, 50, 50, 0.85);
   background-image: url("../img/muffin-white-bitten.svg");
-  background-size: 35px;
-  background-position: center 15px;
+  background-size: 45px;
+  background-position: center 20px;
   background-repeat: no-repeat;
 }
 
