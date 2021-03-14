@@ -69,6 +69,7 @@ fieldset {
 
 .map {
   position: relative;
+  z-index: 1;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1025,4 +1026,28 @@ fieldset {
 
 .hidden {
   display: none;
+}
+
+.data-alert {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 999;
+
+  padding: 70px 25px 20px;
+
+  font-size: 25px;
+  text-align: center;
+  color: #ffffff;
+
+  background-color: rgba(240, 50, 50, 0.85);
+  background-image: url("../img/muffin-white-bitten.svg");
+  background-size: 45px;
+  background-position: center 20px;
+  background-repeat: no-repeat;
+}
+
+.data-alert__message {
+  margin: 0;
 }

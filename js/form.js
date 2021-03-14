@@ -1,12 +1,14 @@
-function disableFormFields(formElement) {  //ф-ия для ДЕактивации полей формы
+function disableFormFields(formElement, cssClassForForm) {  //ф-ия для ДЕактивации полей формы
   for (let formField of formElement.elements) {
     formField.setAttribute('disabled', 'disabled');
   }
+  formElement.classList.add(cssClassForForm);
 }
-function enableFormFields(formElement) {  //ф-ия для активации полей формы
+function enableFormFields(formElement, cssClassForForm) {  //ф-ия для активации полей формы
   for (let formField of formElement.elements) {
     formField.removeAttribute('disabled');
   }
+  formElement.classList.remove(cssClassForForm);
 }
 
 function changePlaceholderAndMin(newValue, formField) {

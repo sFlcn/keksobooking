@@ -75,8 +75,8 @@ const randomizeArray = (array) => {  //ф-ия перемешивания и о�
 
 const createRealty = (id) => {  // ф-ия компановки объекта недвижимости
   const location = {
-    x: getRandomPositiveFloatFromRange (35.65000, 35.70000, 5),
-    y: getRandomPositiveFloatFromRange (139.70000, 139.80000, 5),
+    lat: getRandomPositiveFloatFromRange (35.65000, 35.70000, 5),
+    lng: getRandomPositiveFloatFromRange (139.70000, 139.80000, 5),
   };
   const checkInTime = CHECKIN_TIME[getRandomPositiveIntFromRange (0, CHECKIN_TIME.length - 1)];
   const realtyTypes = Object.keys(REALTY_PROPERTIES);

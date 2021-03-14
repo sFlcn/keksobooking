@@ -1,63 +1,53 @@
 import {generatePopupFragment} from './popup.js';
 
-const TOKYO_ZOOM_LEVEL = 12;
-const TOKYO_CENTER = {
-  lat: 35.6765,
-  lng: 139.7494,
+const MAP_DEFAULT_ZOOM_LEVEL = 9;
+const MAP_DEFAULT_CENTER = {
+  lat: 35.89,
+  lng: 139.88,
 }
 const MARKERS_SIZE = [42, 42];
 const MARKERS_ANCHOR_POINT = [21, 42];
 const MARKERS_ICON = './img/pin.svg';
 const MAIN_MARKER_ICON = './img/main-pin.svg';
-const mainMarkerIcon = L.icon({
+
+/* global L:readonly */
+const mapCanvas = L.map('map-canvas');
+
+const mainMarkerIcon = L.icon({ //свойства главного маркера
   iconUrl: MAIN_MARKER_ICON,
   iconSize: MARKERS_SIZE,
   iconAnchor: MARKERS_ANCHOR_POINT,
 });
-const mainMarker = L.marker(
-  TOKYO_CENTER,
+const mainMarker = L.marker( //создание главного маркера
+  MAP_DEFAULT_CENTER,
   {
     draggable: true,
     icon: mainMarkerIcon,
   },
 );
-const icon = L.icon({
+
+const icon = L.icon({ //свойства вторичных маркеров
   iconUrl: MARKERS_ICON,
   iconSize: MARKERS_SIZE,
   iconAnchor: MARKERS_ANCHOR_POINT,
 });
+const markers = L.layerGroup().addTo(mapCanvas); //создание слоя для вторичных маркеров
 
-// КАРТА
-const initMap = (rentalList, onSuccess) => {
-  /* global L:readonly */
-  const mapCanvas = L.map('map-canvas') //активация карты leaflet
-    .on('load', () => {
-      onSuccess();
-    })
-    .setView(TOKYO_CENTER, TOKYO_ZOOM_LEVEL);
-
-  L.tileLayer(  //подключение слоя карты Open Street Map
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-  ).addTo(mapCanvas);
-
-  mainMarker.addTo(mapCanvas); //создание главного маркера
-
-  rentalList.forEach((item) => { //создание вторичных маркеров
-    const {location: {x, y}} = item;
+const createMarkers = (objectsArray) => { // ф-ия создания вторичных маркеров
+  markers.clearLayers();
+  objectsArray.forEach((item) => {
+    const {location: {lat, lng}} = item;
     const marker = L.marker(
       {
-        lat: x,
-        lng: y,
+        lat,
+        lng,
       },
       {
         icon,
       },
     );
     marker
-      .addTo(mapCanvas)
+      .addTo(markers)
       .bindPopup(generatePopupFragment(item),
         {
           keepInView: true,
@@ -66,4 +56,29 @@ const initMap = (rentalList, onSuccess) => {
   });
 }
 
-export {initMap, mainMarker};
+const initMap = (onSuccess) => { // ф-ия активации карты leaflet
+  mapCanvas
+    .on('load', () => {
+      onSuccess();
+    })
+    .setView(MAP_DEFAULT_CENTER, MAP_DEFAULT_ZOOM_LEVEL);
+
+  L.tileLayer(  //подключение слоя карты Open Street Map
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  ).addTo(mapCanvas);
+
+  mainMarker.addTo(mapCanvas); //добавление главного маркера на карту
+
+  return mapCanvas;
+}
+
+const resetMap = () => {
+  mainMarker.setLatLng(MAP_DEFAULT_CENTER);
+  mapCanvas.closePopup();
+  mapCanvas.setView(MAP_DEFAULT_CENTER, MAP_DEFAULT_ZOOM_LEVEL);
+}
+
+export {initMap, mainMarker, createMarkers, resetMap};

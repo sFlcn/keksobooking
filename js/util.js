@@ -1,6 +1,10 @@
 // random-функции
 const INVALID_ARGUMENT = 'Аргументы вне допустимого диапазона';
 
+const isEscEvent = (evt) => {
+  return evt.key === 'Escape' || evt.key === 'Esc';
+};
+
 const getRandomPositiveIntFromRange = (min, max) => {
   if (Number.isInteger(min) && Number.isInteger(max) && min >= 0 && min <= max) {
     return Math.floor(Math.random() * (max + 1 - min) + min); // формула с https://learn.javascript.ru/number
@@ -37,4 +41,4 @@ const getLatLngRoundedString = ({lat, lng}, fractionalDigitsCount = 5) => { //ф
   return `${lat.toFixed(fractionalDigitsCount)}, ${lng.toFixed(fractionalDigitsCount)}`
 }
 
-export {getRandomPositiveIntFromRange, getRandomPositiveFloatFromRange, getNumWithWordDeclension, getLatLngRoundedString};
+export {getRandomPositiveIntFromRange, getRandomPositiveFloatFromRange, getNumWithWordDeclension, getLatLngRoundedString, isEscEvent};
