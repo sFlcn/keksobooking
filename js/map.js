@@ -34,6 +34,7 @@ const icon = L.icon({ //свойства вторичных маркеров
 const markers = L.layerGroup().addTo(mapCanvas); //создание слоя для вторичных маркеров
 
 const createMarkers = (objectsArray) => { // ф-ия создания вторичных маркеров
+  mapCanvas.closePopup();
   markers.clearLayers();
   objectsArray.forEach((item) => {
     const {location: {lat, lng}} = item;
