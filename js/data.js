@@ -1,25 +1,8 @@
 import {getRandomPositiveIntFromRange, getRandomPositiveFloatFromRange} from './util.js';
+import {REALTY_PROPERTIES} from './constants.js';
 
 const INVALID_ARGUMENT = 'Аргументы вне допустимого диапазона';
 const NUMBER_OF_AVATAR_PICTURES = 8;
-const REALTY_PROPERTIES = {
-  palace: {
-    realtyType: 'Дворец',
-    realtyPrice: 10000,
-  },
-  flat: {
-    realtyType: 'Квартира',
-    realtyPrice: 1000,
-  },
-  house: {
-    realtyType: 'Дом',
-    realtyPrice: 5000,
-  },
-  bungalow:{
-    realtyType: 'Бунгало',
-    realtyPrice: 0,
-  },
-};
 const CHECKIN_TIME = [
   '12:00',
   '13:00',

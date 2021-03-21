@@ -1,14 +1,5 @@
 import {generatePopupFragment} from './popup.js';
-
-const MAP_DEFAULT_ZOOM_LEVEL = 9;
-const MAP_DEFAULT_CENTER = {
-  lat: 35.89,
-  lng: 139.88,
-}
-const MARKERS_SIZE = [42, 42];
-const MARKERS_ANCHOR_POINT = [21, 42];
-const MARKERS_ICON = './img/pin.svg';
-const MAIN_MARKER_ICON = './img/main-pin.svg';
+import {MARKERS_SIZE, MARKERS_ANCHOR_POINT, MARKERS_ICON, MAIN_MARKER_ICON, MAP_DEFAULT_ZOOM_LEVEL, MAP_DEFAULT_CENTER} from './constants.js';
 
 /* global L:readonly */
 const mapCanvas = L.map('map-canvas');
