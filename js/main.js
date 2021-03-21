@@ -2,7 +2,7 @@ import {initMap, mainMarker, createMarkers, resetMap} from './map.js';
 import {getLatLngRoundedString} from './util.js';
 import {disableFormFields, enableFormFields, changePlaceholderAndMin, changeFieldsValue, fieldValueValidation, fieldValueLengthValidation, checkCapacity} from './form.js';
 import {REALTY_PROPERTIES} from './data.js';
-import {getData, sendData} from './api.js';
+import {fetchData} from './api.js';
 import {showSimpleAlert, showCustomVanishingAlert} from './alerts.js';
 import {getFilteredObjects, isPropertyFitsFilter} from './filter.js';
 
@@ -110,34 +110,28 @@ if (mapSection && adForm) {
   transferAddres();
 
   //  загрузка данных, инициализация КАРТЫ и ФОРМ
-  getData(
-    GET_DATA_URL,
-    ((offersList) => {
+  fetchData(GET_DATA_URL)
+    .then((offersList) => {
       initMap(initForms);
       createMarkers(offersList);
       mapFilters.addEventListener('change', () => onFiltersChange(offersList));
-    }),
-    (() => {
+    })
+    .catch(() => {
       initMap(initForms);
       showCustomVanishingAlert(dataAlertTemplateElement, mainElement, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DATA_ALERT_TEXT);
-    }),
-  );
+    });
 
   //  отправка данных формы
-  const onFormSubmit = (evt) => {
+  adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    sendData(
-      new FormData(evt.target),
-      SEND_DATA_URL,
-      (() => {
+    fetchData(SEND_DATA_URL, new FormData(evt.target))
+      .then(() => {
         resetUserInputs();
         showSimpleAlert(successMessageTemplateElement, mainElement);
-      }),
-      (() => {
+      })
+      .catch(() => {
         showSimpleAlert(errorMessageTemplateElement, mainElement);
-      }),
-    );
-  }
-  adForm.addEventListener('submit', onFormSubmit);
+      });
+  });
 
 }
