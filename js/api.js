@@ -1,7 +1,5 @@
-const fetchData = async (targetUrl, sentData) => {
-  const response = sentData ?
-    await fetch(targetUrl, {method: 'POST', body: sentData}) :
-    await fetch(targetUrl);
+const fetchData = async (targetUrl, options) => {
+  const response = await fetch(targetUrl, options);
   if (response.ok) {
     return await response.json();
   }

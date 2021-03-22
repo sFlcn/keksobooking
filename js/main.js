@@ -97,7 +97,7 @@ fetchData(GET_DATA_URL)
 //  отправка данных формы
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  fetchData(SEND_DATA_URL, new FormData(evt.target))
+  fetchData(SEND_DATA_URL, {method: 'POST', body: new FormData(evt.target)})
     .then(() => {
       resetUserInputs();
       showSimpleAlert(successMessageTemplateElement, mainElement);
