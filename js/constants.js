@@ -1,6 +1,8 @@
 export const GET_DATA_URL = 'https://22.javascript.pages.academy/keksobooking/data';
 export const SEND_DATA_URL = 'https://22.javascript.pages.academy/keksobooking';
 
+export const RERENDER_DELAY = 500;
+
 export const MAX_MARKERS_QUANTITY = 10;
 export const MARKERS_SIZE = [42, 42];
 export const MARKERS_ANCHOR_POINT = [21, 42];
@@ -37,6 +39,20 @@ export const REALTY_PROPERTIES = {
   bungalow:{
     realtyType: 'Бунгало',
     realtyPrice: 0,
+  },
+};
+export const HOUSING_PRICES = {
+  high: {
+    from: 50000,
+    till: Infinity,
+  },
+  middle: {
+    from: 10000,
+    till: 50000,
+  },
+  low: {
+    from: 0,
+    till: 10000,
   },
 };
 
