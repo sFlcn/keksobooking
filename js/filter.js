@@ -1,5 +1,26 @@
 const isPropertyFitsFilter = (objectProperty, filterElement, unassignedFilterValue) => {
-  return filterElement.value === objectProperty || filterElement.value === unassignedFilterValue;
+  const {value} = filterElement;
+  return value === unassignedFilterValue || value === objectProperty;
+}
+
+const isNumericPropertyFitsFilter = (objectProperty, filterElement, unassignedFilterValue) => {
+  const {value} = filterElement;
+  return value === unassignedFilterValue || +value === objectProperty;
+}
+
+const isNumericPropertyFitsRangeFilter = (objectProperty, filterElement, rangesObject, unassignedFilterValue) => {
+  const {value} = filterElement;
+  return value === unassignedFilterValue ||
+    objectProperty >= rangesObject[value].from && objectProperty < rangesObject[value].till;
+}
+
+const isFeaturesInProperties = (objectFeaturesArray, featuresFiltersElements) => {
+  return [...featuresFiltersElements].every((feature) => {
+    if (feature.checked) {
+      return objectFeaturesArray.includes(feature.value);
+    }
+    return true;
+  });
 }
 
 const getFilteredObjects = (objectsArray, check, maxLength) => {
@@ -12,4 +33,4 @@ const getFilteredObjects = (objectsArray, check, maxLength) => {
   return filteredArray;
 }
 
-export {isPropertyFitsFilter, getFilteredObjects};
+export {isPropertyFitsFilter, isNumericPropertyFitsFilter, isNumericPropertyFitsRangeFilter, isFeaturesInProperties, getFilteredObjects};

@@ -41,4 +41,13 @@ const getLatLngRoundedString = ({lat, lng}, fractionalDigitsCount = 5) => { //ф
   return `${lat.toFixed(fractionalDigitsCount)}, ${lng.toFixed(fractionalDigitsCount)}`
 }
 
-export {getRandomPositiveIntFromRange, getRandomPositiveFloatFromRange, getNumWithWordDeclension, getLatLngRoundedString, isEscEvent};
+const debounce = (fn, delay) => {
+  let timerId;
+  return (...args) => {
+    const boundFunc = fn.bind(this, ...args);
+    clearTimeout(timerId);
+    timerId = setTimeout(boundFunc, delay);
+  }
+}
+
+export {isEscEvent, getRandomPositiveIntFromRange, getRandomPositiveFloatFromRange, getNumWithWordDeclension, getLatLngRoundedString, debounce};
