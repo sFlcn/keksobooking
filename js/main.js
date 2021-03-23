@@ -51,11 +51,6 @@ const checkFilters = (realtyObject) => {  //ф-ия проверки объек�
   );
 }
 
-const onResetButtonClick = (evt) => { //обработчик кнопки сброса
-  evt.preventDefault();
-  resetUserInputs();
-}
-
 const resetUserInputs = () => { //ф-ия возвращения карты и форм в исходное состояние
   resetMap();
   mapFilters.reset();
@@ -84,6 +79,7 @@ adFormCapacity.addEventListener('change', onRoomsAndCapacityFieldsChange);
 onRoomsAndCapacityFieldsChange();
 mainMarker.on('moveend', onMainMarkerMoove); //вывод координат главного маркера в поле адреса
 onMainMarkerMoove();
+
 mapFilters.addEventListener(
   'change',
   debounce(
@@ -91,7 +87,11 @@ mapFilters.addEventListener(
     RERENDER_DELAY,
   ),
 );
-adFormResetButton.addEventListener('click', onResetButtonClick);
+
+adFormResetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetUserInputs();
+});
 
 //  загрузка данных, инициализация КАРТЫ и ФОРМ
 fetchData(GET_DATA_URL)
