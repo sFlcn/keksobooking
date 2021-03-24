@@ -162,7 +162,7 @@
           <label class="ad-form__label">Фотография жилья</label>
           <div class="ad-form__photo-container">
             <div class="ad-form__upload">
-              <input type="file" id="images" name="images" class="ad-form__input visually-hidden" accept="image/*">
+              <input type="file" id="images" name="images" class="ad-form__input visually-hidden" accept="image/*" multiple>
               <label for="images" class="ad-form__drop-zone">Загрузить<br>фото...</label>
             </div>
             <div class="ad-form__photo"></div>
@@ -235,6 +235,13 @@
   <template id="data-alert">
     <div class="data-alert">
       <p class="data-alert__message">Не удалось загрузить данные с сервера.<br>Попробуйте повторить позднее.</p>
+    </div>
+  </template>
+
+  <!-- Сообщение об ошибке загрузки данных -->
+  <template id="ad-form__photo-template">
+    <div class="ad-form__photo">
+      <img class="ad-form__user-photo" src="" alt="Фото жилья" width="100%" height="100%">
     </div>
   </template>
 

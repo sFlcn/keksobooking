@@ -56,6 +56,9 @@ export const HOUSING_PRICES = {
   },
 };
 
+export const PICTURES_MIME_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/svg+xml'];
+export const DEFAULT_PREVIEW_PICTURE = 'img/muffin-grey.svg';
+
 export const DATA_ALERT_TIME = 3000;
 export const DATA_ALERT_MESSAGE_CLASS = 'data-alert__message';
 export const DATA_ALERT_TEXT = 'Не удаётся загрузить данные объявлений.<br>Повторите попытку позднее.';
