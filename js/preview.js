@@ -27,7 +27,11 @@ const generatePreviewElements = (fileChooser, previewsContainer, previewTemplate
   const fragment = document.createDocumentFragment();
   for (let file of fileChooser.files) {
     const previewElement = previewTemplate.cloneNode(true);
-    const imageElement = previewElement.querySelector('img')
+    const imageElement = previewElement.querySelector('img');
+    imageElement.style.width = '100%';
+    imageElement.style.height = '100%';
+    imageElement.style.objectFit = 'contain';
+    imageElement.alt = file.name;
     if (isImage(file)) {
       readImageFileAndSetSrc(file, imageElement);
     }
