@@ -1,7 +1,8 @@
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import {generatePopupFragment} from './popup.js';
 import {MARKERS_SIZE, MARKERS_ANCHOR_POINT, MARKERS_ICON, MAIN_MARKER_ICON, MAP_DEFAULT_ZOOM_LEVEL, MAP_DEFAULT_CENTER} from './constants.js';
 
-/* global L:readonly */
 const mapCanvas = L.map('map-canvas');
 
 const mainMarkerIcon = L.icon({ //свойства главного маркера
