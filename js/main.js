@@ -1,10 +1,11 @@
-import {GET_DATA_URL, SEND_DATA_URL, RERENDER_DELAY,MAX_MARKERS_QUANTITY, DEFAULT_FILTER_VALUE, TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, MIN_PRICE, MAX_PRICE, MIN_ROOM_CAPACITY, MAX_ROOM_COUNT, NO_GUESTS_TEXT, REALTY_PROPERTIES, HOUSING_PRICES, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DATA_ALERT_TEXT, CSS_CLASS_FOR_DISABLED_FILTERS, CSS_CLASS_FOR_DISABLED_FORM} from './constants.js';
+import {GET_DATA_URL, SEND_DATA_URL, RERENDER_DELAY,MAX_MARKERS_QUANTITY, DEFAULT_FILTER_VALUE, TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, MIN_PRICE, MAX_PRICE, MIN_ROOM_CAPACITY, MAX_ROOM_COUNT, NO_GUESTS_TEXT, REALTY_PROPERTIES, HOUSING_PRICES, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DEFAULT_PREVIEW_PICTURE, DATA_ALERT_TEXT, CSS_CLASS_FOR_DISABLED_FILTERS, CSS_CLASS_FOR_DISABLED_FORM} from './constants.js';
 import {initMap, mainMarker, createMarkers, resetMap} from './map.js';
 import {getLatLngRoundedString, debounce} from './util.js';
 import {disableFormFields, enableFormFields, changePlaceholderAndMin, changeFieldsValue, fieldValueValidation, fieldValueLengthValidation, checkCapacity} from './form.js';
 import {fetchData} from './api.js';
 import {showSimpleAlert, showCustomVanishingAlert} from './alerts.js';
 import {isPropertyFitsFilter, isNumericPropertyFitsFilter, isNumericPropertyFitsRangeFilter, isFeaturesInProperties, getFilteredObjects} from './filter.js';
+import {setPreview, resetPreview, generatePreviewElements, resetPreviewElements} from './preview.js';
 
 const mainElement = document.querySelector('main');
 const mapSection = document.querySelector('.map');
@@ -15,6 +16,8 @@ const filterHousingRooms = mapFilters.querySelector('#housing-rooms');
 const filterHousingGuests = mapFilters.querySelector('#housing-guests');
 const filterHousingFeatures = mapFilters.querySelectorAll('#housing-features input[type="checkbox"]');
 const adForm = document.querySelector('.ad-form');
+const adFormUserpicChooser = adForm.querySelector('.ad-form-header__input');
+const adFormUserpicPreview = adForm.querySelector('.ad-form-header__preview img');
 const adFormTitle = adForm.querySelector('#title');
 const adFormAddress = adForm.querySelector('#address');
 const adFormType = adForm.querySelector('#type');
@@ -24,10 +27,13 @@ const adFormCheckinTime = adFormTime.querySelector('#timein');
 const adFormCheckoutTime = adFormTime.querySelector('#timeout');
 const adFormRoomsCount = adForm.querySelector('#room_number');
 const adFormCapacity = adForm.querySelector('#capacity');
+const adFormPhotoChooser = adForm.querySelector('.ad-form__input');
+const adFormPhotoContainer = adForm.querySelector('.ad-form__photo-container');
 const adFormResetButton = adForm.querySelector('.ad-form__reset');
 const successMessageTemplateElement = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplateElement = document.querySelector('#error').content.querySelector('.error');
 const dataAlertTemplateElement = document.querySelector('#data-alert').content.querySelector('.data-alert');
+const formPhotoTemplateElement = document.querySelector('#ad-form__photo-template').content.querySelector('.ad-form__photo');
 
 const onTypeFieldChange = () => { //ф-ия синхронизации поля цены в зависимости от типа жилья
   changePlaceholderAndMin(REALTY_PROPERTIES[adFormType.value]['realtyPrice'], adFormPrice);
@@ -51,11 +57,6 @@ const checkFilters = (realtyObject) => {  //ф-ия проверки объек�
   );
 }
 
-const onResetButtonClick = (evt) => { //обработчик кнопки сброса
-  evt.preventDefault();
-  resetUserInputs();
-}
-
 const resetUserInputs = () => { //ф-ия возвращения карты и форм в исходное состояние
   resetMap();
   mapFilters.reset();
@@ -63,6 +64,8 @@ const resetUserInputs = () => { //ф-ия возвращения карты и �
   createMarkers(offersData);
   onTypeFieldChange();
   onMainMarkerMoove();
+  resetPreview(adFormUserpicPreview, DEFAULT_PREVIEW_PICTURE);
+  resetPreviewElements(adFormPhotoContainer, formPhotoTemplateElement);
 }
 
 let offersData = null;
@@ -84,6 +87,9 @@ adFormCapacity.addEventListener('change', onRoomsAndCapacityFieldsChange);
 onRoomsAndCapacityFieldsChange();
 mainMarker.on('moveend', onMainMarkerMoove); //вывод координат главного маркера в поле адреса
 onMainMarkerMoove();
+adFormUserpicChooser.addEventListener('change', () => {setPreview(adFormUserpicChooser, adFormUserpicPreview)});
+adFormPhotoChooser.addEventListener('change', () => {generatePreviewElements(adFormPhotoChooser, adFormPhotoContainer, formPhotoTemplateElement)});
+
 mapFilters.addEventListener(
   'change',
   debounce(
@@ -91,7 +97,11 @@ mapFilters.addEventListener(
     RERENDER_DELAY,
   ),
 );
-adFormResetButton.addEventListener('click', onResetButtonClick);
+
+adFormResetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetUserInputs();
+});
 
 //  загрузка данных, инициализация КАРТЫ и ФОРМ
 fetchData(GET_DATA_URL)
