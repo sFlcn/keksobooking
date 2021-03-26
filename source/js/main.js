@@ -1,7 +1,7 @@
 import {GET_DATA_URL, SEND_DATA_URL, RERENDER_DELAY,MAX_MARKERS_QUANTITY, DEFAULT_FILTER_VALUE, TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, MIN_PRICE, MAX_PRICE, MIN_ROOM_CAPACITY, MAX_ROOM_COUNT, NO_GUESTS_TEXT, REALTY_PROPERTIES, HOUSING_PRICES, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DEFAULT_PREVIEW_PICTURE, DATA_ALERT_TEXT, CSS_CLASS_FOR_DISABLED_FILTERS, CSS_CLASS_FOR_DISABLED_FORM} from './constants.js';
 import {initMap, mainMarker, createMarkers, resetMap} from './map.js';
 import {getLatLngRoundedString, debounce} from './util.js';
-import {disableFormFields, enableFormFields, changePlaceholderAndMin, changeFieldsValue, fieldValueValidation, fieldValueLengthValidation, checkCapacity} from './form.js';
+import {enableFormFields, changePlaceholderAndMin, changeFieldsValue, fieldValueValidation, fieldValueLengthValidation, checkCapacity} from './form.js';
 import {fetchData} from './api.js';
 import {showSimpleAlert, showCustomVanishingAlert} from './alerts.js';
 import {isPropertyFitsFilter, isNumericPropertyFitsFilter, isNumericPropertyFitsRangeFilter, isFeaturesInProperties, getFilteredObjects} from './filter.js';
@@ -69,9 +69,6 @@ const resetUserInputs = () => { //ф-ия возвращения карты и �
 }
 
 let offersData = null;
-//деактивация формы объявления и фильтров до загрузки карты
-disableFormFields(adForm, CSS_CLASS_FOR_DISABLED_FORM);
-disableFormFields(mapFilters, CSS_CLASS_FOR_DISABLED_FILTERS);
 //блокировка редактирования поля адреса (координат)
 adFormAddress.setAttribute('readonly', '');
 //синхронизации полей времени заезда и выезда
