@@ -1,4 +1,4 @@
-import {GET_DATA_URL, SEND_DATA_URL, RERENDER_DELAY,MAX_MARKERS_QUANTITY, DEFAULT_FILTER_VALUE, TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, MIN_PRICE, MAX_PRICE, MIN_ROOM_CAPACITY, MAX_ROOM_COUNT, NO_GUESTS_TEXT, REALTY_PROPERTIES, HOUSING_PRICES, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DEFAULT_PREVIEW_PICTURE, DATA_ALERT_TEXT, CSS_CLASS_FOR_DISABLED_FILTERS, CSS_CLASS_FOR_DISABLED_FORM} from './constants.js';
+import {GET_DATA_URL, SEND_DATA_URL, RERENDER_DELAY,MAX_MARKERS_QUANTITY, DEFAULT_FILTER_VALUE, TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, MAX_PRICE, MIN_ROOM_CAPACITY, MAX_ROOM_COUNT, NO_GUESTS_TEXT, REALTY_PROPERTIES, HOUSING_PRICES, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DEFAULT_PREVIEW_PICTURE, DATA_ALERT_TEXT, CSS_CLASS_FOR_DISABLED_FILTERS, CSS_CLASS_FOR_DISABLED_FORM} from './constants.js';
 import {initMap, mainMarker, createMarkers, resetMap} from './map.js';
 import {getLatLngRoundedString, debounce} from './util.js';
 import {enableFormFields, changePlaceholderAndMin, changeFieldsValue, validateFieldValue, validateFieldValueLength, checkCapacity} from './form.js';
@@ -35,9 +35,14 @@ const errorMessageTemplateElement = document.querySelector('#error').content.que
 const dataAlertTemplateElement = document.querySelector('#data-alert').content.querySelector('.data-alert');
 const formPhotoTemplateElement = document.querySelector('#ad-form__photo-template').content.querySelector('.ad-form__photo');
 
-const onTypeFieldChange = () => { //ф-ия синхронизации поля цены в зависимости от типа жилья
-  changePlaceholderAndMin(REALTY_PROPERTIES[adFormType.value]['realtyPrice'], adFormPrice);
+const onTypeFieldChange = () => {
+  changePlaceholderAndMin(REALTY_PROPERTIES[adFormType.value]['realtyMinPrice'], adFormPrice);
+  onPriceFieldChange();
 };
+
+const onPriceFieldChange = () => {
+  validateFieldValue(adFormPrice, adFormPrice.min, MAX_PRICE);
+}
 
 const onRoomsAndCapacityFieldsChange = () => {  //ф-ия валидация полей с количеством комнат и количеством мест
   checkCapacity(adFormRoomsCount, adFormCapacity, MIN_ROOM_CAPACITY, MAX_ROOM_COUNT, NO_GUESTS_TEXT);
@@ -78,7 +83,7 @@ onTypeFieldChange();
 //валидация длинны заголовка
 adFormTitle.addEventListener('input', () => validateFieldValueLength(adFormTitle, TITLE_MIN_LENGTH, TITLE_MAX_LENGTH));
 //валидация цены за ночь
-adFormPrice.addEventListener('input', () => validateFieldValue(adFormPrice, MIN_PRICE, MAX_PRICE));
+adFormPrice.addEventListener('input', onPriceFieldChange);
 adFormRoomsCount.addEventListener('change', onRoomsAndCapacityFieldsChange);
 adFormCapacity.addEventListener('change', onRoomsAndCapacityFieldsChange);
 onRoomsAndCapacityFieldsChange();

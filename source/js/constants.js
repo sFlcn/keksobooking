@@ -23,7 +23,6 @@ export const DEFAULT_FILTER_VALUE = 'any';
 
 export const TITLE_MIN_LENGTH = 30;
 export const TITLE_MAX_LENGTH = 100;
-export const MIN_PRICE = 0;
 export const MAX_PRICE = 1000000;
 export const MIN_ROOM_CAPACITY = '0';
 export const MAX_ROOM_COUNT = '100';
@@ -31,19 +30,19 @@ export const NO_GUESTS_TEXT = 'Не для гостей';
 export const REALTY_PROPERTIES = {
   palace: {
     realtyType: 'Дворец',
-    realtyPrice: 10000,
+    realtyMinPrice: 10000,
   },
   flat: {
     realtyType: 'Квартира',
-    realtyPrice: 1000,
+    realtyMinPrice: 1000,
   },
   house: {
     realtyType: 'Дом',
-    realtyPrice: 5000,
+    realtyMinPrice: 5000,
   },
   bungalow:{
     realtyType: 'Бунгало',
-    realtyPrice: 0,
+    realtyMinPrice: 0,
   },
 };
 export const HOUSING_PRICES = {
