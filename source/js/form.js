@@ -17,7 +17,7 @@ function changeFieldsValue(newValue, ...fields) {
   }
 }
 
-function fieldValueValidation(formField, minValue, maxValue) {
+function validateFieldValue(formField, minValue, maxValue) {
   const fieldValue = formField.value;
   if (fieldValue < minValue) {
     formField.setCustomValidity(`Значение не менее ${minValue}`);
@@ -28,7 +28,7 @@ function fieldValueValidation(formField, minValue, maxValue) {
   }
 }
 
-function fieldValueLengthValidation(formField, minLength, maxLength) {
+function validateFieldValueLength(formField, minLength, maxLength) {
   const valueLength = formField.value.length;
   if (valueLength < minLength) {
     formField.setCustomValidity(`Введите не менее ${minLength} символов (ещё ${minLength - valueLength})`);
@@ -52,4 +52,4 @@ function checkCapacity(сountField, сapacityField, capacityMinimum, сountMaxim
   }
 }
 
-export {enableFormFields, changePlaceholderAndMin, changeFieldsValue, fieldValueValidation, fieldValueLengthValidation, checkCapacity};
+export {enableFormFields, changePlaceholderAndMin, changeFieldsValue, validateFieldValue, validateFieldValueLength, checkCapacity};

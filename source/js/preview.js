@@ -1,6 +1,6 @@
 import {PICTURES_MIME_TYPES} from './constants.js';
 
-const DEFAULT_IMAGE_PROPERTIES = {
+const DEFAULT_IMAGE_STYLES = {
   width: '100%',
   height: '100%',
   objectFit: 'contain',
@@ -28,7 +28,7 @@ const resetPreview = (previewElement, defaultImage = '') => {
   previewElement.src = defaultImage;
 }
 
-const setImageProperties = (imageElement, altText, objectFit = DEFAULT_IMAGE_PROPERTIES.objectFit, width = DEFAULT_IMAGE_PROPERTIES.width, height = DEFAULT_IMAGE_PROPERTIES.height) => {
+const setImageProperties = (imageElement, altText, {objectFit, width, height}) => {
   imageElement.alt = altText;
   imageElement.style.objectFit = objectFit;
   imageElement.style.width = width;
@@ -40,7 +40,7 @@ const getPreviewsFragment = (filesArray, previewTemplate) => {
   for (let file of filesArray) {
     const previewElement = previewTemplate.cloneNode(true);
     const imageElement = previewElement.querySelector('img');
-    setImageProperties(imageElement, file.name);
+    setImageProperties(imageElement, file.name, DEFAULT_IMAGE_STYLES);
     readImageFileAndSetSrc(file, imageElement);
     fragment.appendChild(previewElement);
   }

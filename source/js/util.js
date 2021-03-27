@@ -24,12 +24,12 @@ const getLatLngRoundedString = ({lat, lng}, fractionalDigitsCount = 5) => { //ф
   return `${lat.toFixed(fractionalDigitsCount)}, ${lng.toFixed(fractionalDigitsCount)}`
 }
 
-const debounce = (fn, delay) => {
+const debounce = (callback, delay) => {
   let timerId;
   return (...args) => {
-    const boundFunc = fn.bind(this, ...args);
+    const boundFunction = callback.bind(this, ...args);
     clearTimeout(timerId);
-    timerId = setTimeout(boundFunc, delay);
+    timerId = setTimeout(boundFunction, delay);
   }
 }
 
