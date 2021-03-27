@@ -1,5 +1,5 @@
 import {getNumWithWordDeclension} from './util.js';
-import {REALTY_PROPERTIES} from './data.js';
+import {REALTY_PROPERTIES} from './constants.js';
 
 const ROOMS_DECLENSION_ARRAY = [
   'комната',
