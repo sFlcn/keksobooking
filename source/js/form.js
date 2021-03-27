@@ -1,23 +1,23 @@
-function enableFormFields(formElement, cssClassForForm) {  //ф-ия для активации полей формы
+const enableFormFields = (formElement, cssClassForForm) => {  //ф-ия для активации полей формы
   for (let formField of formElement.elements) {
     formField.removeAttribute('disabled');
   }
   formElement.classList.remove(cssClassForForm);
 }
 
-function changePlaceholderAndMin(newValue, formField) {
+const changePlaceholderAndMin = (newValue, formField) => {
   formField.placeholder = newValue;
   formField.setAttribute('min', newValue);
 }
 
 
-function changeFieldsValue(newValue, ...fields) {
+const changeFieldsValue = (newValue, ...fields) =>  {
   for (let field of fields) {
     field.value = newValue;
   }
 }
 
-function validateFieldValue(formField, minValue, maxValue) {
+const validateFieldValue = (formField, minValue, maxValue) => {
   const fieldValue = formField.value;
   if (fieldValue < minValue) {
     formField.setCustomValidity(`Значение не менее ${minValue}`);
@@ -28,7 +28,7 @@ function validateFieldValue(formField, minValue, maxValue) {
   }
 }
 
-function validateFieldValueLength(formField, minLength, maxLength) {
+const validateFieldValueLength = (formField, minLength, maxLength) => {
   const valueLength = formField.value.length;
   if (valueLength < minLength) {
     formField.setCustomValidity(`Введите не менее ${minLength} символов (ещё ${minLength - valueLength})`);
@@ -39,7 +39,7 @@ function validateFieldValueLength(formField, minLength, maxLength) {
   }
 }
 
-function checkCapacity(сountField, сapacityField, capacityMinimum, сountMaximum, specialMessage) {
+const checkCapacity = (сountField, сapacityField, capacityMinimum, сountMaximum, specialMessage) => {
   if (сountField.value === сountMaximum && сapacityField.value !== capacityMinimum) {
     сapacityField.setCustomValidity(specialMessage);
     сountField.setCustomValidity('');

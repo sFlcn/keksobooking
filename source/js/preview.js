@@ -47,22 +47,22 @@ const getPreviewsFragment = (filesArray, previewTemplate) => {
   return fragment;
 }
 
-const generatePreviewElements = (fileChooser, previewsContainer, previewTemplate) => {
+const generatePreviewElements = (fileChooser, previewsContainerElement, previewTemplate) => {
   const fragment = getPreviewsFragment(fileChooser.files, previewTemplate);
-  deletePreviewElements(previewsContainer, previewTemplate);
-  previewsContainer.appendChild(fragment);
+  deletePreviewElements(previewsContainerElement, previewTemplate);
+  previewsContainerElement.appendChild(fragment);
 }
 
-const deletePreviewElements = (previewsContainer, previewTemplate) => {
-  const previews = previewsContainer.querySelectorAll(`.${previewTemplate.className}`);
+const deletePreviewElements = (previewsContainerElement, previewTemplate) => {
+  const previews = previewsContainerElement.querySelectorAll(`.${previewTemplate.className}`);
   for (let preview of previews) {
     preview.remove();
   }
 }
 
-const resetPreviewElements = (previewsContainer, previewTemplate) => {
-  deletePreviewElements(previewsContainer, previewTemplate);
-  previewsContainer.appendChild(previewTemplate.cloneNode());
+const resetPreviewElements = (previewsContainerElement, previewTemplate) => {
+  deletePreviewElements(previewsContainerElement, previewTemplate);
+  previewsContainerElement.appendChild(previewTemplate.cloneNode());
 }
 
 export {setPreviewFromFileChooser, resetPreview, generatePreviewElements, resetPreviewElements};
