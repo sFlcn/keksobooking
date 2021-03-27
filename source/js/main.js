@@ -5,7 +5,7 @@ import {enableFormFields, changePlaceholderAndMin, changeFieldsValue, fieldValue
 import {fetchData} from './api.js';
 import {showSimpleAlert, showCustomVanishingAlert} from './alerts.js';
 import {isPropertyFitsFilter, isNumericPropertyFitsFilter, isNumericPropertyFitsRangeFilter, isFeaturesInProperties, getFilteredObjects} from './filter.js';
-import {setPreview, resetPreview, generatePreviewElements, resetPreviewElements} from './preview.js';
+import {setPreviewFromFileChooser, resetPreview, generatePreviewElements, resetPreviewElements} from './preview.js';
 
 const mainElement = document.querySelector('main');
 const mapSection = document.querySelector('.map');
@@ -17,7 +17,7 @@ const filterHousingGuests = mapFilters.querySelector('#housing-guests');
 const filterHousingFeatures = mapFilters.querySelectorAll('#housing-features input[type="checkbox"]');
 const adForm = document.querySelector('.ad-form');
 const adFormUserpicChooser = adForm.querySelector('.ad-form-header__input');
-const adFormUserpicPreview = adForm.querySelector('.ad-form-header__preview img');
+const adFormUserpicImage = adForm.querySelector('.ad-form-header__preview img');
 const adFormTitle = adForm.querySelector('#title');
 const adFormAddress = adForm.querySelector('#address');
 const adFormType = adForm.querySelector('#type');
@@ -64,7 +64,7 @@ const resetUserInputs = () => { //ф-ия возвращения карты и �
   createMarkers(offersData);
   onTypeFieldChange();
   onMainMarkerMoove();
-  resetPreview(adFormUserpicPreview, DEFAULT_PREVIEW_PICTURE);
+  resetPreview(adFormUserpicImage, DEFAULT_PREVIEW_PICTURE);
   resetPreviewElements(adFormPhotoContainer, formPhotoTemplateElement);
 }
 
@@ -84,7 +84,7 @@ adFormCapacity.addEventListener('change', onRoomsAndCapacityFieldsChange);
 onRoomsAndCapacityFieldsChange();
 mainMarker.on('moveend', onMainMarkerMoove); //вывод координат главного маркера в поле адреса
 onMainMarkerMoove();
-adFormUserpicChooser.addEventListener('change', () => {setPreview(adFormUserpicChooser, adFormUserpicPreview)});
+adFormUserpicChooser.addEventListener('change', () => {setPreviewFromFileChooser(adFormUserpicChooser, adFormUserpicImage)});
 adFormPhotoChooser.addEventListener('change', () => {generatePreviewElements(adFormPhotoChooser, adFormPhotoContainer, formPhotoTemplateElement)});
 
 mapFilters.addEventListener(
