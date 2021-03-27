@@ -84,8 +84,8 @@ adFormCapacity.addEventListener('change', onRoomsAndCapacityFieldsChange);
 onRoomsAndCapacityFieldsChange();
 mainMarker.on('moveend', onMainMarkerMoove); //вывод координат главного маркера в поле адреса
 onMainMarkerMoove();
-adFormUserpicChooser.addEventListener('change', () => {setPreviewFromFileChooser(adFormUserpicChooser, adFormUserpicImage)});
-adFormPhotoChooser.addEventListener('change', () => {generatePreviewElements(adFormPhotoChooser, adFormPhotoContainer, formPhotoTemplateElement)});
+adFormUserpicChooser.addEventListener('change', () => setPreviewFromFileChooser(adFormUserpicChooser, adFormUserpicImage));
+adFormPhotoChooser.addEventListener('change', () => generatePreviewElements(adFormPhotoChooser, adFormPhotoContainer, formPhotoTemplateElement));
 
 mapFilters.addEventListener(
   'change',
@@ -111,7 +111,7 @@ fetchData(GET_DATA_URL)
     createMarkers(offersData);
   })
   .catch(() => {
-    initMap(() => {enableFormFields(adForm, CSS_CLASS_FOR_DISABLED_FORM)});
+    initMap(() => enableFormFields(adForm, CSS_CLASS_FOR_DISABLED_FORM));
     showCustomVanishingAlert(dataAlertTemplateElement, mainElement, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DATA_ALERT_TEXT);
   });
 
@@ -123,5 +123,5 @@ adForm.addEventListener('submit', (evt) => {
       resetUserInputs();
       showSimpleAlert(successMessageTemplateElement, mainElement);
     })
-    .catch(() => {showSimpleAlert(errorMessageTemplateElement, mainElement)});
+    .catch(() => showSimpleAlert(errorMessageTemplateElement, mainElement));
 });
