@@ -27,6 +27,7 @@ export const MAX_PRICE = 1000000;
 export const MIN_ROOM_CAPACITY = '0';
 export const MAX_ROOM_COUNT = '100';
 export const NO_GUESTS_TEXT = 'Не для гостей';
+export const REALTY_FEATURE_CLASS = 'popup__feature';
 export const REALTY_PROPERTIES = {
   palace: {
     realtyType: 'Дворец',
