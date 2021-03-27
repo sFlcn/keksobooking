@@ -35,7 +35,7 @@ const generatePopupFragment = ({
   priceText.appendChild(priceCurrencyBlock);
 
   const featuresList = popupContent.querySelector('.popup__features');
-  if (features.length > 0) {
+  if (features.length) {
     const featuresFragment = document.createDocumentFragment();
     features.forEach((item) => {
       const featureItem = popupTemplate.querySelector('.popup__feature').cloneNode(true);
@@ -49,7 +49,7 @@ const generatePopupFragment = ({
   }
 
   const photosList = popupContent.querySelector('.popup__photos');
-  if (photos.length > 0) {
+  if (photos.length) {
     const photosFragment = document.createDocumentFragment();
     photos.forEach((item) => {
       const photoItem = popupTemplate.querySelector('.popup__photo').cloneNode(true);
