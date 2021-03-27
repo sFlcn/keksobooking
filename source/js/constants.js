@@ -13,6 +13,11 @@ export const MAP_DEFAULT_CENTER = {
   lat: 35.89,
   lng: 139.88,
 }
+export const MAP_LAYER = {
+  layerLink: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}
+
 
 export const DEFAULT_FILTER_VALUE = 'any';
 

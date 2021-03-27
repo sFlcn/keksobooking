@@ -1,7 +1,7 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {generatePopupFragment} from './popup.js';
-import {MARKERS_SIZE, MARKERS_ANCHOR_POINT, MARKERS_ICON, MAIN_MARKER_ICON, MAP_DEFAULT_ZOOM_LEVEL, MAP_DEFAULT_CENTER} from './constants.js';
+import {MARKERS_SIZE, MARKERS_ANCHOR_POINT, MARKERS_ICON, MAIN_MARKER_ICON, MAP_DEFAULT_ZOOM_LEVEL, MAP_DEFAULT_CENTER, MAP_LAYER} from './constants.js';
 
 const mapCanvas = L.map('map-canvas');
 
@@ -57,10 +57,8 @@ const initMap = (onSuccess) => { // ф-ия активации карты leafle
     .setView(MAP_DEFAULT_CENTER, MAP_DEFAULT_ZOOM_LEVEL);
 
   L.tileLayer(  //подключение слоя карты Open Street Map
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
+    MAP_LAYER.layerLink,
+    {attribution: MAP_LAYER.attribution},
   ).addTo(mapCanvas);
 
   mainMarker.addTo(mapCanvas); //добавление главного маркера на карту
