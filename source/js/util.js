@@ -14,7 +14,7 @@ const getNumWithWordDeclension = (number, wordFormsArray) => {
     declension = wordFormsArray[2];
   } else if (numberLastDigit > 1 && numberLastDigit < 5) {
     declension = wordFormsArray[1];
-  } else if (numberLastDigit == 1) {
+  } else if (numberLastDigit === 1) {
     declension = wordFormsArray[0];
   }
   return number + ' ' + declension;
