@@ -30,25 +30,39 @@ const generatePopupFragment = ({
   }
 
   const popupAvatarElement = popupContent.querySelector('.popup__avatar');
-  fillOutThePopupElement(avatar, popupAvatarElement, () => popupAvatarElement.src = avatar);
+  fillOutThePopupElement(avatar, popupAvatarElement, () => {
+    popupAvatarElement.src = avatar;
+  });
 
   const popupTitleElement = popupContent.querySelector('.popup__title');
-  fillOutThePopupElement(title, popupTitleElement, () => popupTitleElement.textContent = title);
+  fillOutThePopupElement(title, popupTitleElement, () => {
+    popupTitleElement.textContent = title;
+  });
 
   const popupAddressElement = popupContent.querySelector('.popup__text--address');
-  fillOutThePopupElement(address, popupAddressElement, () => popupAddressElement.textContent = address);
+  fillOutThePopupElement(address, popupAddressElement, () => {
+    popupAddressElement.textContent = address;
+  });
 
   const popupTypeElement = popupContent.querySelector('.popup__type');
-  fillOutThePopupElement(type, popupTypeElement, () => popupTypeElement.textContent = REALTY_PROPERTIES[type]['realtyType']);
+  fillOutThePopupElement(type, popupTypeElement, () => {
+    popupTypeElement.textContent = REALTY_PROPERTIES[type]['realtyType'];
+  });
 
   const popupCapacityElement = popupContent.querySelector('.popup__text--capacity');
-  fillOutThePopupElement((rooms && guests), popupCapacityElement, () => popupCapacityElement.textContent = `${getNumWithWordDeclension(rooms, ROOMS_DECLENSION_ARRAY)} для ${getNumWithWordDeclension(guests, GUESTS_DECLENSION_ARRAY)}`);
+  fillOutThePopupElement((rooms && guests), popupCapacityElement, () => {
+    popupCapacityElement.textContent = `${getNumWithWordDeclension(rooms, ROOMS_DECLENSION_ARRAY)} для ${getNumWithWordDeclension(guests, GUESTS_DECLENSION_ARRAY)}`;
+  });
 
   const popupTimeElement = popupContent.querySelector('.popup__text--time');
-  fillOutThePopupElement((checkin && checkout), popupTimeElement, () => popupTimeElement.textContent = `Заезд после ${checkin}, выезд до ${checkout}`);
+  fillOutThePopupElement((checkin && checkout), popupTimeElement, () => {
+    popupTimeElement.textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
+  });
 
   const popupDescriptionElement = popupContent.querySelector('.popup__description');
-  fillOutThePopupElement(title, popupDescriptionElement, () => popupDescriptionElement.textContent = description);
+  fillOutThePopupElement(title, popupDescriptionElement, () => {
+    popupDescriptionElement.textContent = description;
+  });
 
   const popupPriceElement = popupContent.querySelector('.popup__text--price');
   const popupCurrencyElement = popupPriceElement.querySelector('span');
