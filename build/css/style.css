@@ -917,6 +917,19 @@ fieldset {
   border: 2px solid #ff5635;
 }
 
+.popup__full-view {
+  display: none;
+}
+
+.popup__full-view--show {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: contain;
+  background-color: white;
+}
+
 
 /**
  * Сообщения об успешном и неуспешном создании объявления

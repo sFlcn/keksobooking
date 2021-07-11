@@ -41,11 +41,7 @@ const createMarkers = (objectsArray) => { // ф-ия создания втори
     );
     marker
       .addTo(markers)
-      .bindPopup(generatePopupFragment(item),
-        {
-          keepInView: true,
-        },
-      );
+      .bindPopup(generatePopupFragment(item));
   });
 }
 
@@ -71,5 +67,27 @@ const resetMap = () => {
   mapCanvas.closePopup();
   mapCanvas.setView(MAP_DEFAULT_CENTER, MAP_DEFAULT_ZOOM_LEVEL);
 }
+
+
+const onPopupPhotoClick = (evt) => {
+  if (evt.target.classList.contains('popup__photo')) {
+    document.querySelector('.popup__full-view').src = evt.target.getAttribute('src');
+    document.querySelector('.popup__full-view').classList.add('popup__full-view--show');
+  }
+  if (evt.target.classList.contains('popup__full-view--show')) {
+    evt.target.classList.remove('popup__full-view--show');
+  }
+}
+
+const onPopupOpen = () => {
+  document.addEventListener('click', onPopupPhotoClick);
+}
+
+const onPopupClose = () => {
+  document.removeEventListener('click', onPopupPhotoClick);
+}
+
+mapCanvas.on('popupopen', onPopupOpen);
+mapCanvas.on('popupclose', onPopupClose);
 
 export {initMap, mainMarker, createMarkers, resetMap};
