@@ -87,7 +87,7 @@ adFormPrice.addEventListener('input', onPriceFieldChange);
 adFormRoomsCount.addEventListener('change', onRoomsAndCapacityFieldsChange);
 adFormCapacity.addEventListener('change', onRoomsAndCapacityFieldsChange);
 onRoomsAndCapacityFieldsChange();
-mainMarker.on('moveend', onMainMarkerMoove); //вывод координат главного маркера в поле адреса
+mainMarker.on('move', onMainMarkerMoove); //вывод координат главного маркера в поле адреса
 onMainMarkerMoove();
 adFormUserpicChooser.addEventListener('change', () => setPreviewFromFileChooser(adFormUserpicChooser, adFormUserpicImage));
 adFormPhotoChooser.addEventListener('change', () => generatePreviewElements(adFormPhotoChooser, adFormPhotoContainer, formPhotoTemplateElement));
