@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import {generatePopupFragment} from './popup.js';
+import {generatePopupFragment, onPopupPhotoClick} from './popup.js';
 import {MARKERS_SIZE, MARKERS_ANCHOR_POINT, MARKERS_ICON, MAIN_MARKER_ICON, MAP_DEFAULT_ZOOM_LEVEL, MAP_DEFAULT_CENTER, MAP_LAYER} from './constants.js';
 
 const mapCanvas = L.map('map-canvas');
@@ -66,17 +66,6 @@ const resetMap = () => {
   mainMarker.setLatLng(MAP_DEFAULT_CENTER);
   mapCanvas.closePopup();
   mapCanvas.setView(MAP_DEFAULT_CENTER, MAP_DEFAULT_ZOOM_LEVEL);
-}
-
-
-const onPopupPhotoClick = (evt) => {
-  if (evt.target.classList.contains('popup__photo')) {
-    document.querySelector('.popup__full-view').src = evt.target.getAttribute('src');
-    document.querySelector('.popup__full-view').classList.add('popup__full-view--show');
-  }
-  if (evt.target.classList.contains('popup__full-view--show')) {
-    evt.target.classList.remove('popup__full-view--show');
-  }
 }
 
 const onPopupOpen = () => {

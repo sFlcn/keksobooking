@@ -1,5 +1,9 @@
 import {getNumWithWordDeclension} from './util.js';
-import {REALTY_FEATURE_CLASS, REALTY_PROPERTIES} from './constants.js';
+import {
+  REALTY_FEATURE_CLASS, REALTY_PROPERTIES,
+  CSS_CLASS_FOR_POPUP_PHOTOS, CSS_CLASS_FOR_PHOTO_VIEW_CONTAINER, CSS_CLASS_MODIFIER_FOR_PHOTO_VIEW_CONTAINER
+} from './constants.js';
+import {} from './constants.js';
 
 const ROOMS_DECLENSION_ARRAY = [
   'комната',
@@ -98,4 +102,15 @@ const generatePopupFragment = ({
   return document.createDocumentFragment().appendChild(popupContent);
 }
 
-export {generatePopupFragment};
+const onPopupPhotoClick = (evt) => {  //ф-ия показа фото в попапе объявления по клику
+  if (evt.target.classList.contains(CSS_CLASS_FOR_POPUP_PHOTOS)) {
+    const photoViewContainer = document.querySelector(`.${CSS_CLASS_FOR_PHOTO_VIEW_CONTAINER}`);
+    photoViewContainer.src = evt.target.getAttribute('src');
+    photoViewContainer.classList.add(CSS_CLASS_MODIFIER_FOR_PHOTO_VIEW_CONTAINER);
+  }
+  if (evt.target.classList.contains(CSS_CLASS_MODIFIER_FOR_PHOTO_VIEW_CONTAINER)) {
+    evt.target.classList.remove(CSS_CLASS_MODIFIER_FOR_PHOTO_VIEW_CONTAINER);
+  }
+}
+
+export {generatePopupFragment, onPopupPhotoClick};

@@ -17,7 +17,9 @@ export const MAP_LAYER = {
   layerLink: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }
-
+export const CSS_CLASS_FOR_POPUP_PHOTOS = 'popup__photo';
+export const CSS_CLASS_FOR_PHOTO_VIEW_CONTAINER = 'popup__full-view';
+export const CSS_CLASS_MODIFIER_FOR_PHOTO_VIEW_CONTAINER = 'popup__full-view--show';
 
 export const DEFAULT_FILTER_VALUE = 'any';
 
