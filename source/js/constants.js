@@ -1,4 +1,5 @@
 export const GET_DATA_URL = 'https://22.javascript.pages.academy/keksobooking/data';
+export const GET_DATA_ALTERNATIVE_URL = 'data/serverData.json';
 export const SEND_DATA_URL = 'https://22.javascript.pages.academy/keksobooking';
 
 export const RERENDER_DELAY = 500;

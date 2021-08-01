@@ -1,4 +1,4 @@
-import {GET_DATA_URL, SEND_DATA_URL, RERENDER_DELAY,MAX_MARKERS_QUANTITY, DEFAULT_FILTER_VALUE, TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, MAX_PRICE, MIN_ROOM_CAPACITY, MAX_ROOM_COUNT, NO_GUESTS_TEXT, REALTY_PROPERTIES, HOUSING_PRICES, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DEFAULT_PREVIEW_PICTURE, DATA_ALERT_TEXT, CSS_CLASS_FOR_DISABLED_FILTERS, CSS_CLASS_FOR_DISABLED_FORM} from './constants.js';
+import {GET_DATA_URL, GET_DATA_ALTERNATIVE_URL, SEND_DATA_URL, RERENDER_DELAY,MAX_MARKERS_QUANTITY, DEFAULT_FILTER_VALUE, TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, MAX_PRICE, MIN_ROOM_CAPACITY, MAX_ROOM_COUNT, NO_GUESTS_TEXT, REALTY_PROPERTIES, HOUSING_PRICES, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DEFAULT_PREVIEW_PICTURE, DATA_ALERT_TEXT, CSS_CLASS_FOR_DISABLED_FILTERS, CSS_CLASS_FOR_DISABLED_FORM} from './constants.js';
 import {initMap, mainMarker, createMarkers, resetMap} from './map.js';
 import {getLatLngRoundedString, debounce} from './util.js';
 import {enableFormFields, changePlaceholderAndMin, changeFieldsValue, validateFieldValue, validateFieldValueLength, checkCapacity} from './form.js';
@@ -106,18 +106,24 @@ adFormResetButton.addEventListener('click', (evt) => {
 });
 
 //  загрузка данных, инициализация КАРТЫ и ФОРМ
+const initializeInterface = (offersList) => {
+  initMap(() => {
+    enableFormFields(adForm, CSS_CLASS_FOR_DISABLED_FORM);
+    enableFormFields(mapFilters, CSS_CLASS_FOR_DISABLED_FILTERS);
+  });
+  offersData = offersList;
+  createMarkers(offersData);
+}
+
 fetchData(GET_DATA_URL)
-  .then((offersList) => {
-    initMap(() => {
-      enableFormFields(adForm, CSS_CLASS_FOR_DISABLED_FORM);
-      enableFormFields(mapFilters, CSS_CLASS_FOR_DISABLED_FILTERS);
-    });
-    offersData = offersList;
-    createMarkers(offersData);
-  })
+  .then((offersList) => initializeInterface(offersList))
   .catch(() => {
-    initMap(() => enableFormFields(adForm, CSS_CLASS_FOR_DISABLED_FORM));
-    showCustomVanishingAlert(dataAlertTemplateElement, mainElement, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DATA_ALERT_TEXT);
+    fetchData(GET_DATA_ALTERNATIVE_URL)
+      .then((offersList) => initializeInterface(offersList))
+      .catch(() => {
+        initMap(() => enableFormFields(adForm, CSS_CLASS_FOR_DISABLED_FORM));
+        showCustomVanishingAlert(dataAlertTemplateElement, mainElement, DATA_ALERT_TIME, DATA_ALERT_MESSAGE_CLASS, DATA_ALERT_TEXT);
+      })
   });
 
 //  отправка данных формы
