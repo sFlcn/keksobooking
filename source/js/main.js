@@ -6,6 +6,7 @@ import {fetchData} from './api.js';
 import {showSimpleAlert, showCustomVanishingAlert} from './alerts.js';
 import {isPropertyFitsFilter, isNumericPropertyFitsFilter, isNumericPropertyFitsRangeFilter, isFeaturesInProperties, getFilteredObjects} from './filter.js';
 import {setPreviewFromFileChooser, resetPreview, generatePreviewElements, resetPreviewElements} from './preview.js';
+import {saveUserOffer} from './serverEmulation.js';
 
 const mainElement = document.querySelector('main');
 const mapSection = document.querySelector('.map');
@@ -129,10 +130,12 @@ fetchData(GET_DATA_URL)
 //  отправка данных формы
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  fetchData(SEND_DATA_URL, {method: 'POST', body: new FormData(evt.target)})
+  const formData = new FormData(evt.target);
+  fetchData(SEND_DATA_URL, {method: 'POST', body: formData})
     .then(() => {
       resetUserInputs();
       showSimpleAlert(successMessageTemplateElement, mainElement);
     })
     .catch(() => showSimpleAlert(errorMessageTemplateElement, mainElement));
+  offersData = offersData.concat(saveUserOffer(formData));
 });
