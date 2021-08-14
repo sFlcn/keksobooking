@@ -1,7 +1,6 @@
+import {DEFAULT_PREVIEW_PICTURE} from './constants.js';
+
 export const saveUserOffer = (formData) => {
-  // formData.forEach((value, key) => {
-  //   console.log(`${key}: ${value}`);
-  // });
   let userData = [];
   userData[0] = getOfferFromFormData(formData);
   return userData;
@@ -9,7 +8,12 @@ export const saveUserOffer = (formData) => {
 
 const getOfferFromFormData = (formData) => {
   let userOffer = {'author': {}, 'location': {}, 'offer': {}};
-  userOffer['author']['avatar'] = URL.createObjectURL(formData.get('avatar'));
+
+  if (formData.get('avatar').size <= 0) {
+    userOffer['author']['avatar'] = DEFAULT_PREVIEW_PICTURE;
+  } else {
+    userOffer['author']['avatar'] = URL.createObjectURL(formData.get('avatar'));
+  }
 
   const location = formData.get('address').split(', ');
   userOffer['location']['lat'] = location[0];
