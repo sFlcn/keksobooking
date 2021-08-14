@@ -68,11 +68,15 @@ const checkFilters = (realtyObject) => {  //ф-ия проверки объек�
   );
 }
 
+const filterAndCreateMarkers = (offersData) => {
+  createMarkers(getFilteredObjects(offersData, checkFilters, MAX_MARKERS_QUANTITY));
+}
+
 const resetUserInputs = () => { //ф-ия возвращения карты и форм в исходное состояние
   resetMap();
   mapFilters.reset();
   adForm.reset();
-  createMarkers(offersData);
+  filterAndCreateMarkers(offersData);
   onTypeFieldChange();
   onMainMarkerMoove();
   resetPreview(adFormUserpicImage, DEFAULT_PREVIEW_PICTURE);
@@ -101,7 +105,7 @@ adFormPhotoChooser.addEventListener('change', () => generatePreviewElements(adFo
 mapFilters.addEventListener(
   'change',
   debounce(
-    () => createMarkers(getFilteredObjects(offersData, checkFilters, MAX_MARKERS_QUANTITY)),
+    () => filterAndCreateMarkers(offersData),
     RERENDER_DELAY,
   ),
 );
@@ -118,7 +122,7 @@ const initializeInterface = (offersList) => {
     enableFormFields(mapFilters, CSS_CLASS_FOR_DISABLED_FILTERS);
   });
   offersData = offersList;
-  createMarkers(offersData);
+  filterAndCreateMarkers(offersData);
 }
 
 fetchData(GET_DATA_URL)
