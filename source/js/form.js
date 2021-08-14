@@ -19,9 +19,9 @@ const changeFieldsValue = (newValue, ...fields) =>  {
 
 const validateFieldValue = (formField, minValue, maxValue) => {
   const fieldValue = formField.value;
-  if (fieldValue < minValue) {
+  if (+fieldValue < +minValue) {
     formField.setCustomValidity(`Значение не менее ${minValue}`);
-  } else if (fieldValue > maxValue) {
+  } else if (+fieldValue > +maxValue) {
     formField.setCustomValidity(`Значение не более ${maxValue}`);
   } else {
     formField.setCustomValidity('');
