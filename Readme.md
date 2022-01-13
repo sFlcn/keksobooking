@@ -1,6 +1,10 @@
 # Проект «Кексобукинг»
 
 [![build status](https://github.com/sFlcn/keksobooking/actions/workflows/check-and-deploy.yml/badge.svg)](https://github.com/sFlcn/keksobooking/actions/workflows/check-and-deploy.yml)
+![GitHub last commit](https://img.shields.io/github/last-commit/sFlcn/keksobooking?logo=git)
+
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/sFlcn/keksobooking)
+![GitHub repo size](https://img.shields.io/github/repo-size/sFlcn/keksobooking)
 
 Учебный проект, реализованный во время обучения на курсе [HTML Academy](https://htmlacademy.ru) по JavaScript.
 
@@ -9,7 +13,6 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-informational?style=flat&logo=JavaScript&logoColor=f7df1e&color=d3d3d3)
 ![JSON](https://img.shields.io/badge/JSON-informational?style=flat&logo=JSON&logoColor=000000&color=d3d3d3)
 ![Leaflet](https://img.shields.io/badge/Leaflet-informational?style=flat&logo=Leaflet&logoColor=199900&color=d3d3d3)
-![Node.js](https://img.shields.io/badge/Node.js-informational?style=flat&logo=Node.js&logoColor=339933&color=d3d3d3)
 ![Webpack](https://img.shields.io/badge/Webpack-informational?style=flat&logo=Webpack&logoColor=8dd6f9&color=d3d3d3)
 
 ---
